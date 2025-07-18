@@ -6,47 +6,67 @@
   <title>Dúvidas sobre Produção Animal</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f0f8ff;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
     }
     .container {
-      max-width: 700px;
-      margin: 0 auto;
-      background-color: #fff;
+      max-width: 720px;
+      margin: 2rem auto;
+      background: #fff;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    img.logo {
+      display: block;
+      max-width: 180px;
+      margin: 0 auto 1rem;
+    }
+    h1 {
+      text-align: center;
+      color: #01579b;
+      margin-bottom: 1.5rem;
     }
     input, select, button {
       width: 100%;
-      padding: 1rem;
+      padding: 0.9rem;
       margin: 0.5rem 0;
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 1rem;
+      box-sizing: border-box;
     }
     button {
-      background-color: #2e7d32;
+      background-color: #0288d1;
       color: white;
       font-weight: bold;
       cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #0277bd;
     }
     .result {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       background: #f9f9f9;
       padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      border-left: 4px solid #0288d1;
+      border-radius: 6px;
     }
     a {
-      color: #0077cc;
+      color: #01579b;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <img src="logo.png" alt="Logo do site" class="logo" />
     <h1>Dúvidas sobre Produção Animal</h1>
     <input type="text" id="duvida" placeholder="Digite sua dúvida..." />
     <select id="especie">
@@ -62,12 +82,35 @@
       <option value="equinos">Equinos</option>
       <option value="coelhos">Coelhos</option>
     </select>
-    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2019)" />
+    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)" />
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
   </div>
 
   <script>
+    function transformarDuvida(entrada) {
+      let termos = entrada.toLowerCase();
+
+      const palavrasChave = {
+        "quanto tempo": "longevidade",
+        "vive": "",
+        "pirarucu": "pirarucu",
+        "criar galpão": "ambiência instalações",
+        "criação de aves": "avicultura",
+        "alimentação": "nutrição animal",
+        "engorda": "ganho de peso",
+        "crescimento": "desenvolvimento animal"
+      };
+
+      for (let chave in palavrasChave) {
+        if (termos.includes(chave)) {
+          termos = termos.replace(chave, palavrasChave[chave]);
+        }
+      }
+
+      return termos.trim();
+    }
+
     function buscar() {
       const duvida = document.getElementById("duvida").value.trim();
       const especie = document.getElementById("especie").value.trim();
@@ -79,37 +122,29 @@
         return;
       }
 
-      let termos = duvida;
-      if (especie) termos += " " + especie;
-      termos += " produção animal";
-      if (ano) termos += " ano:" + ano;
+      let duvidaConvertida = transformarDuvida(duvida);
+      if (especie) duvidaConvertida += " " + especie;
+      duvidaConvertida += " produção animal";
+      if (ano) duvidaConvertida += " ano:" + ano;
 
-      const termoBusca = encodeURIComponent(termos);
+      const termoBusca = encodeURIComponent(duvidaConvertida);
 
       resultados.innerHTML = `
         <div class="result">
-          <h3>🔍 Google Scholar</h3>
-          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank" rel="noopener noreferrer">
-            Ver resultados no Google Scholar
-          </a>
+          <strong>🔍 Google Scholar:</strong><br>
+          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
         </div>
         <div class="result">
-          <h3>📚 Scielo</h3>
-          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank" rel="noopener noreferrer">
-            Ver resultados na Scielo
-          </a>
+          <strong>📚 Scielo:</strong><br>
+          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
         </div>
         <div class="result">
-          <h3>🏛️ Repositório UNESP</h3>
-          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank" rel="noopener noreferrer">
-            Ver resultados no Repositório UNESP
-          </a>
+          <strong>🏛️ Repositório UNESP:</strong><br>
+          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
         </div>
         <div class="result">
-          <h3>👨‍🔬 Pesquisadores no LinkedIn</h3>
-          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank" rel="noopener noreferrer">
-            Buscar pesquisadores relacionados
-          </a>
+          <strong>👨‍🔬 Pesquisadores no LinkedIn:</strong><br>
+          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
         </div>
       `;
     }
