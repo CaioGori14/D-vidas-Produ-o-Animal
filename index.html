@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dúvidas sobre Produção Animal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #2e7d32;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 2rem;
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    a {
+      color: #0077cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dúvidas sobre Produção Animal</h1>
+    <input type="text" id="duvida" placeholder="Digite sua dúvida..." />
+    <select id="especie">
+      <option value="">Todas as espécies</option>
+      <option value="bovinos">Bovinos</option>
+      <option value="suínos">Suínos</option>
+      <option value="aves">Aves</option>
+      <option value="ovinos">Ovinos</option>
+      <option value="peixes">Peixes</option>
+      <option value="abelhas">Abelhas</option>
+      <option value="búfalos">Búfalos</option>
+      <option value="rãs">Rãs</option>
+      <option value="equinos">Equinos</option>
+      <option value="coelhos">Coelhos</option>
+    </select>
+    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2019)" />
+    <button onclick="buscar()">Buscar Artigos</button>
+    <div id="resultados"></div>
+  </div>
+
+  <script>
+    function buscar() {
+      const duvida = document.getElementById("duvida").value.trim();
+      const especie = document.getElementById("especie").value.trim();
+      const ano = document.getElementById("ano").value.trim();
+      const resultados = document.getElementById("resultados");
+
+      if (!duvida) {
+        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
+        return;
+      }
+
+      let termos = duvida;
+      if (especie) termos += " " + especie;
+      termos += " produção animal";
+      if (ano) termos += " ano:" + ano;
+
+      const termoBusca = encodeURIComponent(termos);
+
+      resultados.innerHTML = `
+        <div class="result">
+          <h3>🔍 Google Scholar</h3>
+          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank" rel="noopener noreferrer">
+            Ver resultados no Google Scholar
+          </a>
+        </div>
+        <div class="result">
+          <h3>📚 Scielo</h3>
+          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank" rel="noopener noreferrer">
+            Ver resultados na Scielo
+          </a>
+        </div>
+        <div class="result">
+          <h3>🏛️ Repositório UNESP</h3>
+          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank" rel="noopener noreferrer">
+            Ver resultados no Repositório UNESP
+          </a>
+        </div>
+        <div class="result">
+          <h3>👨‍🔬 Pesquisadores no LinkedIn</h3>
+          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank" rel="noopener noreferrer">
+            Buscar pesquisadores relacionados
+          </a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
