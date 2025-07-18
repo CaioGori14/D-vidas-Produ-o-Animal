@@ -1,324 +1,219 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZooTec Play - Conectando você à Ciência Animal!</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      position: relative;
-      min-height: 100vh;
-    }
-    header {
-      background-color: #01579b;
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    .container {
-      max-width: 720px;
-      margin: 2rem auto;
-      background-color: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-    input, select, button {
-      width: 100%;
-      padding: 0.9rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #0288d1;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      border: none;
-    }
-    button:hover {
-      background-color: #0277bd;
-    }
-    .result {
-      margin-top: 1.5rem;
-      background: #f1f8e9;
-      padding: 1rem;
-      border-left: 4px solid #8bc34a;
-      border-radius: 6px;
-    }
-    a {
-      color: #01579b;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      color: #555;
-      font-size: 0.9rem;
-    }
-    #dica-rodape {
-      font-weight: bold;
-      color: #ffffff;
-      background-color: #0288d1;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      display: inline-block;
-      max-width: 90%;
-      animation: fadeIn 1s ease-in-out;
-      transition: all 0.8s ease-in-out;
-    }
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-      to { opacity: 1; }
-    }
-    .autocomplete-suggestions {
-      background: white;
-      border: 1px solid #ccc;
-      max-height: 150px;
-      overflow-y: auto;
-      border-radius: 5px;
-      position: absolute;
-      z-index: 1000;
-      width: 100%;
-    }
-    .autocomplete-suggestions div {
-      padding: 8px;
-      cursor: pointer;
-    }
-    .autocomplete-suggestions div:hover {
-      background: #f1f1f1;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ZooTec Play - Conectando você à Ciência Animal!</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    margin: 0;
+    color: #222;
+  }
+  header {
+    background: #2c6a4f;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  nav {
+    background: #1b4a33;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  nav a:hover, nav a.active {
+    background-color: #154022;
+  }
+  .submenu {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0 20px;
+  }
+  .submenu span {
+    background: #e1e1e1;
+    color: #333;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .submenu span:hover {
+    background-color: #c7c7c7;
+  }
+  main {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    min-height: 400px;
+  }
+  section {
+    display: none;
+  }
+  section.active {
+    display: block;
+  }
+  #dica {
+    font-style: italic;
+    margin: 20px 0;
+    text-align: center;
+    color: #666;
+  }
+  footer {
+    background: #2c6a4f;
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 40px;
+  }
+  .doacao-button {
+    display: inline-block;
+    background-color: #2c6a4f;
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  .doacao-button:hover {
+    background-color: #1b4a33;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
-    <h1>ZooTec Play - Conectando você à Ciência Animal!</h1>
-  </header>  <div class="container">
-    <div style="position: relative;">
-      <input type="text" id="duvida" placeholder="Digite sua dúvida...">
-      <div id="sugestoes" class="autocomplete-suggestions"></div>
-    </div>
-    <select id="especie">
-      <option value="">Todas as espécies</option>
-      <option value="bovinos">Bovinos</option>
-      <option value="suínos">Suínos</option>
-      <option value="aves">Aves</option>
-      <option value="ovinos">Ovinos</option>
-      <option value="peixes">Peixes</option>
-      <option value="abelhas">Abelhas</option>
-      <option value="búfalos">Búfalos</option>
-      <option value="rãs">Rãs</option>
-      <option value="equinos">Equinos</option>
-      <option value="coelhos">Coelhos</option>
-      <option value="cães">Cães</option>
-      <option value="gatos">Gatos</option>
-    </select>
-    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
-    <button onclick="buscar()">Buscar Artigos</button>
-    <div id="resultados"></div>
-  </div>  <footer>
-    <div id="dica-rodape">Dica carregando...</div>
-    <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
-  </footer>  <script>
-    const sugestoes = [
-      "melhoramento genético em bovinos",
-      "nutrição de bovinos de corte",
-      "ambiência para bovinos leiteiros",
-      "sanidade em bovinos",
-      "reprodução em bovinos",
-      "melhoramento genético em suínos",
-      "nutrição de suínos na fase de crescimento",
-      "ambiência em granjas de suínos",
-      "sanidade em suínos",
-      "reprodução em suínos",
-      "melhoramento genético em aves",
-      "nutrição de frangos de corte",
-      "ambiência em aviários",
-      "sanidade aviária",
-      "produção de ovos em galinhas poedeiras",
-      "melhoramento genético em ovinos",
-      "nutrição de ovinos no semiárido",
-      "ambiência para criação de ovinos",
-      "sanidade de cordeiros",
-      "reprodução em ovinos",
-      "melhoramento genético em peixes",
-      "nutrição de tilápias",
-      "qualidade da água em piscicultura",
-      "sanidade em peixes",
-      "ambiente ideal para piscicultura",
-      "melhoramento genético em abelhas",
-      "manejo de colmeias",
-      "alimentação de abelhas em períodos de escassez",
-      "produtividade de mel",
-      "doenças em colônias de abelhas",
-      "melhoramento genético em búfalos",
-      "nutrição de búfalos",
-      "ambiente ideal para búfalos",
-      "sanidade em bubalinos",
-      "reprodução em búfalos",
-      "melhoramento genético em rãs",
-      "nutrição de rãs em cativeiro",
-      "instalações para ranicultura",
-      "sanidade em rãs",
-      "ambiente ideal para rãs",
-      "melhoramento genético em equinos",
-      "nutrição de cavalos atletas",
-      "ambiência em estábulos",
-      "sanidade em equinos",
-      "reprodução em éguas",
-      "melhoramento genético em coelhos",
-      "nutrição de coelhos de corte",
-      "ambiência para criação de coelhos",
-      "sanidade em coelhos",
-      "reprodução em coelhas",
-      "nutrição de cães",
-      "reprodução em cadelas",
-      "sanidade em canis",
-      "bem-estar animal em cães",
-      "nutrição de gatos",
-      "sanidade felina",
-      "comportamento de gatos domésticos",
-      "bem-estar de gatos em ambientes fechados"
-    ];
 
-    const dicas = [
-      "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
-      "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
-      "📘 O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
-      "🌍 A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
-      "🔍 O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
-      "📚 A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente.",
-      "📖 A BVS Agropecuária oferece acesso gratuito a pesquisas da América Latina.",
-      "🐄 A Embrapa Pecuária Sudeste realiza pesquisas sobre bem-estar e nutrição animal.",
-      "🐂 A Embrapa Gado de Corte desenvolve tecnologias para produção eficiente de carne.",
-      "🐖 A Embrapa Suínos e Aves é referência nacional em biosseguridade e manejo.",
-      "🐑 A Embrapa Caprinos e Ovinos atua no desenvolvimento de tecnologias no semiárido.",
-      "🐠 A Embrapa Pesca e Aquicultura foca em sistemas sustentáveis de produção de peixes.",
-      "🦗 A Embrapa Meio-Norte desenvolve pesquisas com insetos polinizadores como abelhas.",
-      "🐴 A Embrapa desenvolve projetos voltados para melhoramento e nutrição de equinos.",
-      "🦆 A Embrapa trabalha com aves nativas e alternativas para sistemas familiares.",
-      "🐰 A Embrapa realiza estudos sobre produtividade e manejo de coelhos.",
-      "🐝 A Embrapa Meio-Norte também investiga doenças em colônias de abelhas.",
-      "🦎 A Embrapa Ranicultura atua com produção de rãs em cativeiro e ambiente controlado.",
-      "🐕 Pesquisas sobre bem-estar de cães estão crescendo nas universidades públicas.",
-      "🐈 A UNESP investiga comportamento felino em ambientes urbanos.",
-      "📊 A AGRIS é uma base da FAO com mais de 140 países contribuindo com pesquisas.",
-      "🧪 O Google Scholar permite criar alertas sobre temas específicos como sanidade.",
-      "📰 A SciELO facilita o acesso a revistas científicas de alto impacto no Brasil.",
-      "🧬 A Embrapa realiza estudos genéticos para resistência a doenças em bovinos.",
-      "🏥 A BVS Agro também inclui estudos sobre medicina veterinária preventiva.",
-      "🐂 A Embrapa monitora a emissão de metano em ruminantes com foco em sustentabilidade.",
-      "🧫 O repositório da UNESP integra dados de teses e dissertações em ciências animais.",
-      "🩺 A Embrapa participa de projetos interdisciplinares sobre bem-estar animal.",
-      "🐓 A Embrapa possui vídeos educativos sobre biosseguridade em aviários.",
-      "🐟 A FAO publica relatórios técnicos sobre piscicultura em águas continentais.",
-      "🐄 A Embrapa participa de pesquisas com cruzamentos industriais em bovinos leiteiros.",
-      "📺 A Embrapa oferece acesso gratuito a cursos e eventos sobre produção animal.",
-      "📡 A UNESP oferece ensino a distância voltado para sanidade de animais de produção.",
-      "🔬 A FAO possui guias técnicos sobre saúde única e vigilância zoonótica."
-    ]
+<header>ZooTec Play - Conectando você à Ciência Animal!</header>
 
-    let dicaIndex = 0;
-    function trocarDica() {
-      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
-      dicaIndex = (dicaIndex + 1) % dicas.length;
+<nav>
+  <a href="#" id="menu-home" class="active">Home</a>
+  <a href="#" id="menu-quemsomos">Quem Somos</a>
+  <a href="#" id="menu-apoie">Apoie</a>
+</nav>
+
+<div class="submenu">
+  <span>Todas as espécies</span>
+  <span>Bovinos</span>
+  <span>Suínos</span>
+  <span>Aves</span>
+  <span>Ovinos</span>
+  <span>Peixes</span>
+  <span>Abelhas</span>
+  <span>Búfalos</span>
+  <span>Rãs</span>
+  <span>Equinos</span>
+  <span>Coelhos</span>
+  <span>Cães</span>
+  <span>Gatos</span>
+</div>
+
+<main>
+  <section id="home" class="active">
+    <h2>Buscar Artigos</h2>
+    <input type="text" placeholder="Digite sua dúvida aqui..." style="width: 100%; padding: 12px; font-size: 16px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc;" />
+    <div id="dica">Dica carregando...</div>
+    <!-- Aqui pode vir a lista ou resultado da busca -->
+  </section>
+
+  <section id="quemsomos">
+    <h1>Quem Somos</h1>
+    <p>Bem-vindo ao <strong>ZooTec Play</strong> – seu ponto de encontro com a ciência animal!</p>
+    <p>Somos uma equipe apaixonada por zootecnia e produção animal, dedicada a conectar estudantes, profissionais e pesquisadores com as melhores fontes científicas do setor. Nosso objetivo é facilitar o acesso ao conhecimento confiável e atualizado, para que você possa tomar decisões embasadas e aprimorar sua atuação no campo.</p>
+    <p>Aqui, você encontra respostas rápidas e precisas para suas dúvidas, conteúdos exclusivos, e uma comunidade engajada que valoriza a ciência e a inovação na produção animal.</p>
+    <p>Estamos comprometidos com a qualidade, transparência e com o desenvolvimento sustentável do agronegócio.</p>
+    <p>Venha conosco nessa jornada de aprendizado!</p>
+  </section>
+
+  <section id="apoie">
+    <h1>Apoie o ZooTec Play</h1>
+    <p>Se você valoriza o conhecimento científico e acredita no poder da informação para transformar a produção animal, convidamos você a apoiar o nosso trabalho!</p>
+    <p>Manter um site com conteúdo de qualidade, pesquisa e atendimento personalizado exige dedicação e recursos. Sua contribuição é fundamental para continuarmos crescendo e oferecendo um serviço cada vez melhor.</p>
+    <p>Você pode ajudar de forma simples e rápida:</p>
+    <ul>
+      <li><strong>Doações únicas ou mensais:</strong> por meio dos nossos botões seguros via PayPal, PagSeguro ou PicPay.</li>
+      <li><strong>Compartilhando nosso site e conteúdos:</strong> ajuda a ampliar nossa rede e impacto.</li>
+      <li><strong>Participando de nossos cursos e recomendações:</strong> ao acessar os cursos indicados, você também nos ajuda a financiar o projeto.</li>
+    </ul>
+    <a href="https://www.paypal.com/donate?hosted_button_id=SEU_CODIGO_AQUI" target="_blank" class="doacao-button" rel="noopener noreferrer">
+      Doe Agora
+    </a>
+  </section>
+</main>
+
+<footer>
+  © Caio Gori – Produção Animal Inteligente
+</footer>
+
+<script>
+  // Controle de navegação simples
+  const menuHome = document.getElementById('menu-home');
+  const menuQuemSomos = document.getElementById('menu-quemsomos');
+  const menuApoie = document.getElementById('menu-apoie');
+
+  const homeSection = document.getElementById('home');
+  const quemSomosSection = document.getElementById('quemsomos');
+  const apoieSection = document.getElementById('apoie');
+
+  function showSection(sectionToShow) {
+    homeSection.classList.remove('active');
+    quemSomosSection.classList.remove('active');
+    apoieSection.classList.remove('active');
+
+    menuHome.classList.remove('active');
+    menuQuemSomos.classList.remove('active');
+    menuApoie.classList.remove('active');
+
+    if (sectionToShow === 'home') {
+      homeSection.classList.add('active');
+      menuHome.classList.add('active');
+    } else if (sectionToShow === 'quemsomos') {
+      quemSomosSection.classList.add('active');
+      menuQuemSomos.classList.add('active');
+    } else if (sectionToShow === 'apoie') {
+      apoieSection.classList.add('active');
+      menuApoie.classList.add('active');
     }
-    setInterval(trocarDica, 10000);
-    window.onload = trocarDica;
+  }
 
-    const inputDuvida = document.getElementById("duvida");
-    const divSugestoes = document.getElementById("sugestoes");
+  menuHome.addEventListener('click', e => {
+    e.preventDefault();
+    showSection('home');
+  });
 
-    inputDuvida.addEventListener("input", () => {
-      const valor = inputDuvida.value.toLowerCase();
-      divSugestoes.innerHTML = "";
-      if (valor.length > 1) {
-        const filtradas = sugestoes.filter(s => s.toLowerCase().includes(valor));
-        filtradas.forEach(s => {
-          const div = document.createElement("div");
-          div.textContent = s;
-          div.onclick = () => {
-            inputDuvida.value = s;
-            divSugestoes.innerHTML = "";
-          };
-          divSugestoes.appendChild(div);
-        });
-      }
-    });
+  menuQuemSomos.addEventListener('click', e => {
+    e.preventDefault();
+    showSection('quemsomos');
+  });
 
-    document.addEventListener("click", e => {
-      if (e.target !== inputDuvida) {
-        divSugestoes.innerHTML = "";
-      }
-    });
+  menuApoie.addEventListener('click', e => {
+    e.preventDefault();
+    showSection('apoie');
+  });
+</script>
 
-    function buscar() {
-      const duvida = document.getElementById("duvida").value.trim();
-      const especie = document.getElementById("especie").value.trim();
-      const ano = document.getElementById("ano").value.trim();
-      const resultados = document.getElementById("resultados");
-
-      if (!duvida) {
-        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
-        return;
-      }
-
-      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
-
-      resultados.innerHTML = `
-        <div class="result">
-          <strong>🔍 Google Scholar:</strong><br>
-          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📚 Scielo:</strong><br>
-          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🏛️ Repositório UNESP:</strong><br>
-          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📘 EMBRAPA:</strong><br>
-          <a href="https://www.embrapa.br/busca-de-publicacoes/-/publicacao/busca?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-        <div class="result">
-          <strong>🧾 BVS Agropecuária:</strong><br>
-          <a href="https://pesquisa.bvsalud.org/bvsagro/index.php?home_url=http://pesquisa.bvsalud.org/bvsagro/&q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🌍 FAO:</strong><br>
-          <a href="https://www.fao.org/publications/en/?search=${termoBusca}" target="_blank">Buscar na FAO</a>
-        </div>
-        <div class="result">
-          <strong>🌾 AGRIS (FAO):</strong><br>
-          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-        <div class="result">
-          <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
-          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
-        </div>
-      `;
-    }
-  </script></body>
+</body>
 </html>
