@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conectando o estudante da Zootecnia</title>
+  <title>Dúvidas sobre Produção Animal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -11,10 +11,16 @@
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      background-image: url('https://images.unsplash.com/photo-1548191265-cc70d3d45ba1?auto=format&fit=crop&w=1400&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+      min-height: 100vh;
     }
     header {
-      background-color: #01579b;
+      background-color: rgba(1, 87, 155, 0.9);
       color: white;
       padding: 2rem 1rem;
       text-align: center;
@@ -26,7 +32,7 @@
     .container {
       max-width: 720px;
       margin: 2rem auto;
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.95);
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -75,24 +81,25 @@
 </head>
 <body>
   <header>
-    <h1>ZooTec Play - Conectando você à Ciência! </h1>
+    <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
+    <h1>Dúvidas sobre Produção Animal</h1>
   </header>  <div class="container">
-    <input type="text" id="duvida" placeholder="Digite aqui o que gostaria de saber!">
+    <input type="text" id="duvida" placeholder="Digite sua dúvida...">
     <select id="especie">
-  <option value="">Todas as espécies</option>
-  <option value="bovinos">Bovinos</option>
-  <option value="suínos">Suínos</option>
-  <option value="aves">Aves</option>
-  <option value="ovinos">Ovinos</option>
-  <option value="peixes">Peixes</option>
-  <option value="abelhas">Abelhas</option>
-  <option value="búfalos">Búfalos</option>
-  <option value="rãs">Rãs</option>
-  <option value="equinos">Equinos</option>
-  <option value="coelhos">Coelhos</option>
-  <option value="cães">Cães</option>
-  <option value="gatos">Gatos</option>
-</select>
+      <option value="">Todas as espécies</option>
+      <option value="bovinos">Bovinos</option>
+      <option value="suínos">Suínos</option>
+      <option value="aves">Aves</option>
+      <option value="ovinos">Ovinos</option>
+      <option value="peixes">Peixes</option>
+      <option value="abelhas">Abelhas</option>
+      <option value="búfalos">Búfalos</option>
+      <option value="rãs">Rãs</option>
+      <option value="equinos">Equinos</option>
+      <option value="coelhos">Coelhos</option>
+      <option value="cães">Cães</option>
+      <option value="gatos">Gatos</option>
+    </select>
     <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
@@ -103,13 +110,53 @@
       let termos = entrada.toLowerCase();
       const palavrasChave = {
         "quanto tempo": "longevidade",
-        "vive": "",
-        "pirarucu": "pirarucu",
-        "criar galpão": "ambiência instalações",
-        "criação de aves": "avicultura",
-        "alimentação": "nutrição animal",
+        "vive": "longevidade",
+        "esperança de vida": "longevidade",
+        "idade média": "longevidade",
+        "quantos anos": "longevidade",
         "engorda": "ganho de peso",
-        "crescimento": "desenvolvimento animal"
+        "ganhar peso": "ganho de peso",
+        "crescer": "crescimento animal",
+        "crescimento": "crescimento animal",
+        "alimentação": "nutrição animal",
+        "ração": "nutrição animal",
+        "dieta": "nutrição animal",
+        "nutriente": "nutrição animal",
+        "formulação": "formulação de dietas",
+        "manejo": "bem-estar animal",
+        "ambiente": "ambiência animal",
+        "estresse": "estresse térmico",
+        "produção de leite": "lactação",
+        "produção de ovos": "postura",
+        "eficiência reprodutiva": "reprodução animal",
+        "inseminação": "tecnologia reprodutiva",
+        "cruzamento": "melhoramento genético",
+        "seleção": "melhoramento genético",
+        "genes": "genética animal",
+        "característica desejada": "melhoramento genético",
+        "consumo alimentar": "ingestão de matéria seca",
+        "bem estar": "bem-estar animal",
+        "instalação": "ambiência",
+        "galpão": "instalações zootécnicas",
+        "ambiente controlado": "ambiência",
+        "pastagem": "manejo de pastagem",
+        "pastejo": "manejo de pastagem",
+        "desempenho": "desempenho zootécnico",
+        "eficiência": "eficiência alimentar",
+        "carcaça": "rendimento de carcaça",
+        "abate": "peso ao abate",
+        "sanidade": "sanidade animal",
+        "doença": "patologia animal",
+        "vacina": "profilaxia",
+        "vermífugo": "controle parasitário",
+        "parasita": "endoparasitas e ectoparasitas",
+        "microbiota": "saúde intestinal",
+        "fermentação": "fermentação ruminal",
+        "digestão": "digestibilidade",
+        "aditivos": "aditivos nutricionais",
+        "probiótico": "aditivos nutricionais",
+        "prebiótico": "aditivos nutricionais",
+        "enzimas": "aditivos enzimáticos"
       };
       for (let chave in palavrasChave) {
         if (termos.includes(chave)) {
