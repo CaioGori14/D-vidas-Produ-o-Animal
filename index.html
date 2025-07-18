@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!-- index.html atualizado com suporte a PWA --><!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dúvidas sobre Produção Animal</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0288d1">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -85,9 +86,7 @@
     <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)" />
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
-  </div>
-
-  <script>
+  </div>  <script>
     function transformarDuvida(entrada) {
       let termos = entrada.toLowerCase();
 
@@ -143,11 +142,18 @@
           <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
         </div>
         <div class="result">
-          <strong>👨‍🔬 Pesquisadores no LinkedIn:</strong><br>
+          <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
           <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
         </div>
       `;
     }
-  </script>
-</body>
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service Worker registrado'))
+          .catch(err => console.error('Erro no Service Worker:', err));
+      });
+    }
+  </script></body>
 </html>
