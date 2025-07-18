@@ -153,7 +153,7 @@
 
   <div id="quem-somos" class="container" style="display:none;">
     <h2>Quem Somos Nós</h2>
-    <p>Somos uma equipe apaixonada pela ciência animal e pela disseminação de conhecimento técnico e científico de forma acessível. O <strong>ZooTec Play</strong> foi criado por estudantes e profissionais da área de Zootecnia com o objetivo de facilitar a busca por informações confiáveis e atualizadas, conectando produtores, acadêmicos e interessados ao universo da produção animal.</p>
+    <p>Somos uma equipe apaixonada pela ciência animal e pela disseminação de conhecimento técnico e científico de forma acessível. O <strong>ZooTec Play</strong> foi criado por um estudante da área de Zootecnia com o objetivo de facilitar a busca por informações confiáveis e atualizadas, conectando produtores, acadêmicos e interessados ao universo da produção animal.</p>
     <p>Nosso compromisso é com a <strong>inovação, responsabilidade técnica e sustentabilidade</strong>, utilizando ferramentas digitais para promover o acesso ao saber em tempo real.</p>
     <p>Idealizador: <strong>Caio Gori</strong> – Estudante de Zootecnia e pesquisador em Nutrição de Monogástricos.</p>
     <p><a href="#" onclick="voltarPaginaPrincipal()">← Voltar</a></p>
@@ -165,8 +165,42 @@
   </footer>
 
   <script>
-    const sugestoes = [/* ... (mantido igual) ... */];
-    const dicas = [/* ... (mantido igual) ... */];
+    const dicas = [
+      "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
+      "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
+      "📘 O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
+      "🌍 A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
+      "🔍 O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
+      "📚 A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente.",
+      "📖 A BVS Agropecuária oferece acesso gratuito a pesquisas da América Latina.",
+      "🐄 A Embrapa Pecuária Sudeste realiza pesquisas sobre bem-estar e nutrição animal.",
+      "🐂 A Embrapa Gado de Corte desenvolve tecnologias para produção eficiente de carne.",
+      "🐖 A Embrapa Suínos e Aves é referência nacional em biosseguridade e manejo.",
+      "🐑 A Embrapa Caprinos e Ovinos atua no desenvolvimento de tecnologias no semiárido.",
+      "🐠 A Embrapa Pesca e Aquicultura foca em sistemas sustentáveis de produção de peixes.",
+      "🦗 A Embrapa Meio-Norte desenvolve pesquisas com insetos polinizadores como abelhas.",
+      "🐴 A Embrapa desenvolve projetos voltados para melhoramento e nutrição de equinos.",
+      "🦆 A Embrapa trabalha com aves nativas e alternativas para sistemas familiares.",
+      "🐰 A Embrapa realiza estudos sobre produtividade e manejo de coelhos.",
+      "🐝 A Embrapa Meio-Norte também investiga doenças em colônias de abelhas.",
+      "🦎 A Embrapa Ranicultura atua com produção de rãs em cativeiro e ambiente controlado.",
+      "🐕 Pesquisas sobre bem-estar de cães estão crescendo nas universidades públicas.",
+      "🐈 A UNESP investiga comportamento felino em ambientes urbanos.",
+      "📊 A AGRIS é uma base da FAO com mais de 140 países contribuindo com pesquisas.",
+      "🧪 O Google Scholar permite criar alertas sobre temas específicos como sanidade.",
+      "📰 A SciELO facilita o acesso a revistas científicas de alto impacto no Brasil.",
+      "🧬 A Embrapa realiza estudos genéticos para resistência a doenças em bovinos.",
+      "🏥 A BVS Agro também inclui estudos sobre medicina veterinária preventiva.",
+      "🐂 A Embrapa monitora a emissão de metano em ruminantes com foco em sustentabilidade.",
+      "🧫 O repositório da UNESP integra dados de teses e dissertações em ciências animais.",
+      "🩺 A Embrapa participa de projetos interdisciplinares sobre bem-estar animal.",
+      "🐓 A Embrapa possui vídeos educativos sobre biosseguridade em aviários.",
+      "🐟 A FAO publica relatórios técnicos sobre piscicultura em águas continentais.",
+      "🐄 A Embrapa participa de pesquisas com cruzamentos industriais em bovinos leiteiros.",
+      "📺 A Embrapa oferece acesso gratuito a cursos e eventos sobre produção animal.",
+      "📡 A UNESP oferece ensino a distância voltado para sanidade de animais de produção.",
+      "🔬 A FAO possui guias técnicos sobre saúde única e vigilância zoonótica."
+    ];
 
     let dicaIndex = 0;
     function trocarDica() {
@@ -175,81 +209,6 @@
     }
     setInterval(trocarDica, 10000);
     window.onload = trocarDica;
-
-    const inputDuvida = document.getElementById("duvida");
-    const divSugestoes = document.getElementById("sugestoes");
-
-    inputDuvida.addEventListener("input", () => {
-      const valor = inputDuvida.value.toLowerCase();
-      divSugestoes.innerHTML = "";
-      if (valor.length > 1) {
-        const filtradas = sugestoes.filter(s => s.toLowerCase().includes(valor));
-        filtradas.forEach(s => {
-          const div = document.createElement("div");
-          div.textContent = s;
-          div.onclick = () => {
-            inputDuvida.value = s;
-            divSugestoes.innerHTML = "";
-          };
-          divSugestoes.appendChild(div);
-        });
-      }
-    });
-
-    document.addEventListener("click", e => {
-      if (e.target !== inputDuvida) {
-        divSugestoes.innerHTML = "";
-      }
-    });
-
-    function buscar() {
-      const duvida = document.getElementById("duvida").value.trim();
-      const especie = document.getElementById("especie").value.trim();
-      const ano = document.getElementById("ano").value.trim();
-      const resultados = document.getElementById("resultados");
-
-      if (!duvida) {
-        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
-        return;
-      }
-
-      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
-
-      resultados.innerHTML = `
-        <div class="result">
-          <strong>🔍 Google Scholar:</strong><br>
-          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📚 Scielo:</strong><br>
-          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🏛️ Repositório UNESP:</strong><br>
-          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📘 EMBRAPA:</strong><br>
-          <a href="https://www.embrapa.br/busca-de-publicacoes/-/publicacao/busca?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-        <div class="result">
-          <strong>🧾 BVS Agropecuária:</strong><br>
-          <a href="https://pesquisa.bvsalud.org/bvsagro/index.php?home_url=http://pesquisa.bvsalud.org/bvsagro/&q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🌍 FAO:</strong><br>
-          <a href="https://www.fao.org/publications/en/?search=${termoBusca}" target="_blank">Buscar na FAO</a>
-        </div>
-        <div class="result">
-          <strong>🌾 AGRIS (FAO):</strong><br>
-          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-        <div class="result">
-          <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
-          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
-        </div>
-      `;
-    }
 
     function mostrarQuemSomos() {
       document.getElementById("principal").style.display = "none";
