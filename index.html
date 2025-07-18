@@ -11,16 +11,12 @@
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 0;
-      background-image: url('https://images.unsplash.com/photo-1548191265-cc70d3d45ba1?auto=format&fit=crop&w=1400&q=80');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      background-color: #f9f9f9;
       position: relative;
       min-height: 100vh;
     }
     header {
-      background-color: rgba(1, 87, 155, 0.9);
+      background-color: #01579b;
       color: white;
       padding: 2rem 1rem;
       text-align: center;
@@ -32,7 +28,7 @@
     .container {
       max-width: 720px;
       margin: 2rem auto;
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: white;
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -77,6 +73,32 @@
       color: #555;
       font-size: 0.9rem;
     }
+    #dica-rodape {
+      font-weight: bold;
+      color: #01579b;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .autocomplete-suggestions {
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 1000;
+      width: 100%;
+    }
+    .autocomplete-suggestions div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestions div:hover {
+      background: #f1f1f1;
+    }
   </style>
 </head>
 <body>
@@ -84,7 +106,10 @@
     <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
     <h1>Dúvidas sobre Produção Animal</h1>
   </header>  <div class="container">
-    <input type="text" id="duvida" placeholder="Digite sua dúvida...">
+    <div style="position: relative;">
+      <input type="text" id="duvida" placeholder="Digite sua dúvida...">
+      <div id="sugestoes" class="autocomplete-suggestions"></div>
+    </div>
     <select id="especie">
       <option value="">Todas as espécies</option>
       <option value="bovinos">Bovinos</option>
@@ -104,67 +129,96 @@
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
   </div>  <footer>
-    © Caio Gori – Produção Animal Inteligente
+    <div id="dica-rodape">Dica carregando...</div>
+    <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
   </footer>  <script>
-    function transformarDuvida(entrada) {
-      let termos = entrada.toLowerCase();
-      const palavrasChave = {
-        "quanto tempo": "longevidade",
-        "vive": "longevidade",
-        "esperança de vida": "longevidade",
-        "idade média": "longevidade",
-        "quantos anos": "longevidade",
-        "engorda": "ganho de peso",
-        "ganhar peso": "ganho de peso",
-        "crescer": "crescimento animal",
-        "crescimento": "crescimento animal",
-        "alimentação": "nutrição animal",
-        "ração": "nutrição animal",
-        "dieta": "nutrição animal",
-        "nutriente": "nutrição animal",
-        "formulação": "formulação de dietas",
-        "manejo": "bem-estar animal",
-        "ambiente": "ambiência animal",
-        "estresse": "estresse térmico",
-        "produção de leite": "lactação",
-        "produção de ovos": "postura",
-        "eficiência reprodutiva": "reprodução animal",
-        "inseminação": "tecnologia reprodutiva",
-        "cruzamento": "melhoramento genético",
-        "seleção": "melhoramento genético",
-        "genes": "genética animal",
-        "característica desejada": "melhoramento genético",
-        "consumo alimentar": "ingestão de matéria seca",
-        "bem estar": "bem-estar animal",
-        "instalação": "ambiência",
-        "galpão": "instalações zootécnicas",
-        "ambiente controlado": "ambiência",
-        "pastagem": "manejo de pastagem",
-        "pastejo": "manejo de pastagem",
-        "desempenho": "desempenho zootécnico",
-        "eficiência": "eficiência alimentar",
-        "carcaça": "rendimento de carcaça",
-        "abate": "peso ao abate",
-        "sanidade": "sanidade animal",
-        "doença": "patologia animal",
-        "vacina": "profilaxia",
-        "vermífugo": "controle parasitário",
-        "parasita": "endoparasitas e ectoparasitas",
-        "microbiota": "saúde intestinal",
-        "fermentação": "fermentação ruminal",
-        "digestão": "digestibilidade",
-        "aditivos": "aditivos nutricionais",
-        "probiótico": "aditivos nutricionais",
-        "prebiótico": "aditivos nutricionais",
-        "enzimas": "aditivos enzimáticos"
-      };
-      for (let chave in palavrasChave) {
-        if (termos.includes(chave)) {
-          termos = termos.replace(chave, palavrasChave[chave]);
-        }
-      }
-      return termos.trim();
+    const sugestoes = [
+      "longevidade de vacas leiteiras",
+      "alimentação de frangos caipiras",
+      "produção de ovos em galinhas poedeiras",
+      "controle de parasitas em bovinos",
+      "manejo nutricional de suínos",
+      "ambiente ideal para rãs",
+      "melhoramento genético em ovinos",
+      "eficiência alimentar em peixes",
+      "vacinação de bezerros",
+      "instalações para coelhos",
+      "sanidade em abelhas",
+      "cruzamento industrial em bovinos",
+      "suplementação mineral para equinos",
+      "cães na zooterapia",
+      "gatos e nutrição funcional"
+    ];
+
+    const dicas = [
+      "A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
+      "A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
+      "O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
+      "A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
+      "O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
+      "A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente.",
+      "A BVS Agropecuária oferece acesso gratuito a pesquisas da América Latina.",
+      "A Embrapa Pecuária Sudeste realiza pesquisas sobre bem-estar e nutrição animal.",
+      "A FAO tem publicações sobre emissão de metano e sustentabilidade de ruminantes.",
+      "A Embrapa Suínos e Aves é referência nacional em biosseguridade e manejo.",
+      "O repositório da UNESP integra dados de teses e dissertações de diversas áreas.",
+      "O AGRIS é mantido pela FAO e abrange mais de 140 países.",
+      "A SciELO facilita o acesso a revistas científicas de alto impacto no Brasil.",
+      "O Google Scholar permite criar alertas sobre temas específicos.",
+      "A BVS Agro reúne artigos em português, espanhol e inglês.",
+      "A Embrapa Caprinos e Ovinos atua no desenvolvimento de tecnologias no semiárido.",
+      "A FAO possui guias sobre criação de pequenos ruminantes.",
+      "O site da Embrapa possui vídeos e podcasts educativos.",
+      "A SciELO cobre mais de 15 áreas do conhecimento.",
+      "A FAO tem programas voltados à agroecologia e agricultura familiar.",
+      "A Embrapa possui mais de 40 centros de pesquisa no Brasil.",
+      "A UNESP é referência em publicações científicas agropecuárias.",
+      "A AGRIS inclui dados de patentes, artigos e relatórios técnicos.",
+      "A Embrapa Soja desenvolve cultivares adaptadas ao clima tropical.",
+      "A FAO publica mapas interativos de produção animal mundial.",
+      "A BVS Agropecuária é parte da Rede BIREME de informação em saúde e agro.",
+      "A Embrapa tem o maior acervo digital técnico-científico agropecuário do país.",
+      "A UNESP possui cursos gratuitos na área de ciências agrárias.",
+      "O Google Scholar permite acessar diretamente o PDF de muitos artigos.",
+      "A SciELO Brasil é integrada à Web of Science.",
+      "A FAO promove treinamentos e publicações sobre bem-estar animal.",
+      "A Embrapa publica boletins técnicos com recomendações práticas aos produtores.",
+      "A UNESP e a EMBRAPA frequentemente colaboram em projetos de extensão."
+    ];
+
+    let dicaIndex = 0;
+    function trocarDica() {
+      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
+      dicaIndex = (dicaIndex + 1) % dicas.length;
     }
+    setInterval(trocarDica, 10000);
+    window.onload = trocarDica;
+
+    const inputDuvida = document.getElementById("duvida");
+    const divSugestoes = document.getElementById("sugestoes");
+
+    inputDuvida.addEventListener("input", () => {
+      const valor = inputDuvida.value.toLowerCase();
+      divSugestoes.innerHTML = "";
+      if (valor.length > 1) {
+        const filtradas = sugestoes.filter(s => s.toLowerCase().includes(valor));
+        filtradas.forEach(s => {
+          const div = document.createElement("div");
+          div.textContent = s;
+          div.onclick = () => {
+            inputDuvida.value = s;
+            divSugestoes.innerHTML = "";
+          };
+          divSugestoes.appendChild(div);
+        });
+      }
+    });
+
+    document.addEventListener("click", e => {
+      if (e.target !== inputDuvida) {
+        divSugestoes.innerHTML = "";
+      }
+    });
 
     function buscar() {
       const duvida = document.getElementById("duvida").value.trim();
@@ -177,12 +231,7 @@
         return;
       }
 
-      let duvidaConvertida = transformarDuvida(duvida);
-      if (especie) duvidaConvertida += " " + especie;
-      duvidaConvertida += " produção animal";
-      if (ano) duvidaConvertida += " ano:" + ano;
-
-      const termoBusca = encodeURIComponent(duvidaConvertida);
+      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
 
       resultados.innerHTML = `
         <div class="result">
@@ -196,6 +245,22 @@
         <div class="result">
           <strong>🏛️ Repositório UNESP:</strong><br>
           <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📘 EMBRAPA:</strong><br>
+          <a href="https://www.embrapa.br/busca-de-publicacoes/-/publicacao/busca?q=${termoBusca}" target="_blank">Ver publicações</a>
+        </div>
+        <div class="result">
+          <strong>🧾 BVS Agropecuária:</strong><br>
+          <a href="https://pesquisa.bvsalud.org/bvsagro/index.php?home_url=http://pesquisa.bvsalud.org/bvsagro/&q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🌍 FAO:</strong><br>
+          <a href="https://www.fao.org/publications/en/?search=${termoBusca}" target="_blank">Buscar na FAO</a>
+        </div>
+        <div class="result">
+          <strong>🌾 AGRIS (FAO):</strong><br>
+          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
         </div>
         <div class="result">
           <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
