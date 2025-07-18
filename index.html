@@ -75,11 +75,19 @@
     }
     #dica-rodape {
       font-weight: bold;
-      color: #01579b;
+      color: #ffffff;
+      background-color: #0288d1;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      display: inline-block;
+      max-width: 90%;
       animation: fadeIn 1s ease-in-out;
+      transition: all 0.8s ease-in-out;
     }
     @keyframes fadeIn {
-      from { opacity: 0; }
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
       to { opacity: 1; }
     }
     .autocomplete-suggestions {
