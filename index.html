@@ -140,6 +140,12 @@
 </head>
 <body>
   <a href="#" class="link-discreto" onclick="abrirQuemSomos()">Quem somos nós</a>
+  <div id="pagina-quem-somos" style="display:none;">
+    <h3>Quem somos nós</h3>
+    <p>[Insira aqui sua descrição personalizada sobre o projeto, autores, objetivos, etc.]</p>
+    <button onclick="document.getElementById('pagina-quem-somos').style.display='none'">Fechar</button>
+  </div>
+  <a href="#" class="link-discreto" onclick="abrirQuemSomos()">Quem somos nós</a>
   <div id="pagina-quem-somos">
     <h3>Quem somos nós</h3>
     <p>[Insira aqui sua descrição personalizada sobre o projeto, autores, objetivos, etc.]</p>
@@ -276,13 +282,60 @@
     });
 
     function buscar() {
-      const duvida = document.getElementById("duvida").value.trim();
-      const especie = document.getElementById("especie").value.trim();
-      const ano = document.getElementById("ano").value.trim();
-      const resultados = document.getElementById("resultados");
+  const duvida = document.getElementById("duvida").value.trim();
+  const especie = document.getElementById("especie").value.trim();
+  const ano = document.getElementById("ano").value.trim();
+  const resultados = document.getElementById("resultados");
 
-      // Gatilho para gerar uma versão alternativa da busca para FAO/EMBRAPA/AGRIS via Google
-      const buscaGoogleEMBRAPA = `site:embrapa.br boletim OR artigo OR pdf ${termoBusca}`;
+  if (!duvida) {
+    resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
+    return;
+  }
+
+  let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
+  let buscaGoogleEMBRAPA = encodeURIComponent(`site:embrapa.br boletim OR artigo OR pdf ${duvida}`);
+  let buscaGoogleFAO = encodeURIComponent(`site:fao.org arquivo OR relatório OR pdf ${duvida}`);
+  let buscaGoogleAGRIS = encodeURIComponent(`site:agris.fao.org pdf OR artigo OR resumo ${duvida}`);
+
+  resultados.innerHTML = `
+    <div class="result">
+      <strong>🔍 Google Scholar:</strong><br>
+      <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
+    </div>
+    <div class="result">
+      <strong>📚 Scielo:</strong><br>
+      <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
+    </div>
+    <div class="result">
+      <strong>🏛️ Repositório UNESP:</strong><br>
+      <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
+    </div>
+    <div class="result">
+      <strong>📘 EMBRAPA (Google):</strong><br>
+      <a href="https://www.google.com/search?q=${buscaGoogleEMBRAPA}" target="_blank">Ver boletins e artigos</a>
+    </div>
+    <div class="result">
+      <strong>🧾 BVS Agropecuária:</strong><br>
+      <a href="https://pesquisa.bvsalud.org/bvsagro/?q=${termoBusca}" target="_blank">Ver resultados</a>
+    </div>
+    <div class="result">
+      <strong>🌍 FAO (Google):</strong><br>
+      <a href="https://www.google.com/search?q=${buscaGoogleFAO}" target="_blank">Buscar publicações específicas</a>
+    </div>
+    <div class="result">
+      <strong>🌾 AGRIS (Google):</strong><br>
+      <a href="https://www.google.com/search?q=${buscaGoogleAGRIS}" target="_blank">Ver resultados relevantes</a>
+    </div>
+    <div class="result">
+      <strong>📖 Livros relacionados (Google Books):</strong><br>
+      <a href="https://www.google.com/search?tbm=bks&q=${termoBusca}" target="_blank">Buscar livros</a>
+    </div>
+    <div class="result">
+      <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
+      <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
+    </div>
+  `;
+}`;
       const buscaGoogleFAO = `site:fao.org arquivo OR relatório OR pdf ${termoBusca}`;
       const buscaGoogleAGRIS = `site:agris.fao.org pdf OR artigo OR resumo ${termoBusca}`;
 
@@ -374,5 +427,21 @@
   const box = document.getElementById("pagina-quem-somos");
   box.style.display = box.style.display === "block" ? "none" : "block";
 }
+function abrirQuemSomos() {
+  const box = document.getElementById("pagina-quem-somos");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function atualizarDica() {
+  const dicaRodape = document.getElementById("dica-rodape");
+  if (!dicaRodape) return;
+  let index = 0;
+  setInterval(() => {
+    dicaRodape.innerText = dicas[index % dicas.length];
+    index++;
+  }, 10000);
+}
+
+window.onload = atualizarDica;
 </script></body>
 </html>
