@@ -25,16 +25,6 @@
       margin: 0;
       font-size: 2rem;
     }
-    nav a {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-      margin-top: 10px;
-      display: inline-block;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
     .container {
       max-width: 720px;
       margin: 2rem auto;
@@ -98,6 +88,8 @@
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+      to { opacity: 1; }
+    }
     .autocomplete-suggestions {
       background: white;
       border: 1px solid #ccc;
@@ -121,12 +113,7 @@
   <header>
     <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
     <h1>ZooTec Play - Conectando você à Ciência Animal!</h1>
-    <nav>
-      <a href="#" onclick="mostrarQuemSomos()">Quem Somos Nós</a>
-    </nav>
-  </header>
-
-  <div id="principal" class="container">
+  </header>  <div class="container">
     <div style="position: relative;">
       <input type="text" id="duvida" placeholder="Digite sua dúvida...">
       <div id="sugestoes" class="autocomplete-suggestions"></div>
@@ -149,22 +136,39 @@
     <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
-  </div>
-
-  <div id="quem-somos" class="container" style="display:none;">
-    <h2>Quem Somos Nós</h2>
-    <p>Somos uma equipe apaixonada pela ciência animal e pela disseminação de conhecimento técnico e científico de forma acessível. O <strong>ZooTec Play</strong> foi criado por um estudante da área de Zootecnia com o objetivo de facilitar a busca por informações confiáveis e atualizadas, conectando produtores, acadêmicos e interessados ao universo da produção animal.</p>
-    <p>Nosso compromisso é com a <strong>inovação, responsabilidade técnica e sustentabilidade</strong>, utilizando ferramentas digitais para promover o acesso ao saber em tempo real.</p>
-    <p>Idealizador: <strong>Caio Gori</strong> – Estudante de Zootecnia e pesquisador em Nutrição de Monogástricos.</p>
-    <p><a href="#" onclick="voltarPaginaPrincipal()">← Voltar</a></p>
-  </div>
-
-  <footer>
+  </div>  <footer>
     <div id="dica-rodape">Dica carregando...</div>
     <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
-  </footer>
+  </footer>  <script>
+    const sugestoes = [
+      "longevidade de vacas leiteiras",
+      "alimentação de frangos caipiras",
+      "produção de ovos em galinhas poedeiras",
+      "controle de parasitas em bovinos",
+      "manejo nutricional de suínos",
+      "ambiente ideal para rãs",
+      "melhoramento genético em ovinos",
+      "eficiência alimentar em peixes",
+      "vacinação de bezerros",
+      "instalações para coelhos",
+      "sanidade em abelhas",
+      "cruzamento industrial em bovinos",
+      "suplementação mineral para equinos",
+      "cães na zooterapia",
+      "gatos e nutrição funcional",
+      "nutrição de bovinos de corte",
+      "ambiência para bovinos leiteiros",
+      "sanidade em suínos",
+      "melhoramento genético em aves",
+      "ambiente para produção de tilápias",
+      "sanidade de cordeiros",
+      "criação de búfalos em sistema intensivo",
+      "alimentação de coelhos comerciais",
+      "reprodução em éguas",
+      "manejo de colmeias na apicultura",
+      "produção de rãs em tanques escavados"
+    ];
 
-  <script>
     const dicas = [
       "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
       "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
@@ -200,7 +204,7 @@
       "📺 A Embrapa oferece acesso gratuito a cursos e eventos sobre produção animal.",
       "📡 A UNESP oferece ensino a distância voltado para sanidade de animais de produção.",
       "🔬 A FAO possui guias técnicos sobre saúde única e vigilância zoonótica."
-    ];
+    ]
 
     let dicaIndex = 0;
     function trocarDica() {
@@ -210,15 +214,121 @@
     setInterval(trocarDica, 10000);
     window.onload = trocarDica;
 
-    function mostrarQuemSomos() {
-      document.getElementById("principal").style.display = "none";
-      document.getElementById("quem-somos").style.display = "block";
+    const inputDuvida = document.getElementById("duvida");
+    const divSugestoes = document.getElementById("sugestoes");
+
+    inputDuvida.addEventListener("input", () => {
+      const valor = inputDuvida.value.toLowerCase();
+      divSugestoes.innerHTML = "";
+      if (valor.length > 1) {
+        const filtradas = sugestoes.filter(s => s.toLowerCase().includes(valor));
+        filtradas.forEach(s => {
+          const div = document.createElement("div");
+          div.textContent = s;
+          div.onclick = () => {
+            inputDuvida.value = s;
+            divSugestoes.innerHTML = "";
+          };
+          divSugestoes.appendChild(div);
+        });
+      }
+    });
+
+    document.addEventListener("click", e => {
+      if (e.target !== inputDuvida) {
+        divSugestoes.innerHTML = "";
+      }
+    });
+
+    function buscar() {
+      const duvida = document.getElementById("duvida").value.trim();
+      const especie = document.getElementById("especie").value.trim();
+      const ano = document.getElementById("ano").value.trim();
+      const resultados = document.getElementById("resultados");
+
+      if (!duvida) {
+        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
+        return;
+      }
+
+      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
+
+      resultados.innerHTML = `
+        <div class="result">
+          <strong>🔍 Google Scholar:</strong><br>
+          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📚 Scielo:</strong><br>
+          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🏛️ Repositório UNESP:</strong><br>
+          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📘 EMBRAPA (Google):</strong><br>
+          <a href="https://www.google.com/search?q=site%3Aembrapa.br+${termoBusca}" target="_blank">Pesquisar na Embrapa</a>
+        </div>
+        <div class="result">
+          <strong>🧾 BVS Agropecuária:</strong><br>
+          <a href="https://pesquisa.bvsalud.org/bvsagro/?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🌍 FAO (Google):</strong><br>
+          <a href="https://www.google.com/search?q=site%3Afao.org+${termoBusca}" target="_blank">Buscar na FAO</a>
+        </div>
+        <div class="result">
+          <strong>🌾 AGRIS (FAO):</strong><br>
+          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
+        </div>
+        <div class="result">
+          <strong>📖 Livros relacionados (Google Books):</strong><br>
+          <a href="https://www.google.com/search?tbm=bks&q=${termoBusca}" target="_blank">Buscar livros</a>
+        </div>
+        <div class="result">
+          <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
+          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
+        </div>
+      `;
     }
 
-    function voltarPaginaPrincipal() {
-      document.getElementById("quem-somos").style.display = "none";
-      document.getElementById("principal").style.display = "block";
+      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
+
+      resultados.innerHTML = `
+        <div class="result">
+          <strong>🔍 Google Scholar:</strong><br>
+          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📚 Scielo:</strong><br>
+          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🏛️ Repositório UNESP:</strong><br>
+          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📘 EMBRAPA:</strong><br>
+          <a href="https://www.embrapa.br/busca-de-publicacoes/-/publicacao/busca?q=${termoBusca}" target="_blank">Ver publicações</a>
+        </div>
+        <div class="result">
+          <strong>🧾 BVS Agropecuária:</strong><br>
+          <a href="https://pesquisa.bvsalud.org/bvsagro/index.php?home_url=http://pesquisa.bvsalud.org/bvsagro/&q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🌍 FAO:</strong><br>
+          <a href="https://www.fao.org/publications/en/?search=${termoBusca}" target="_blank">Buscar na FAO</a>
+        </div>
+        <div class="result">
+          <strong>🌾 AGRIS (FAO):</strong><br>
+          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
+        </div>
+        <div class="result">
+          <strong>👨‍💼 Pesquisadores no LinkedIn:</strong><br>
+          <a href="https://www.linkedin.com/search/results/people/?keywords=${termoBusca}" target="_blank">Buscar profissionais</a>
+        </div>
+      `;
     }
-  </script>
-</body>
+  </script></body>
 </html>
