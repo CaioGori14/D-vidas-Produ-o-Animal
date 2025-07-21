@@ -141,6 +141,28 @@
     <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
   </footer>
   <script>
+    const dicas = [
+      "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
+      "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
+      "📘 O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
+      "🌍 A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
+      "🔍 O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
+      "📚 A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente."
+    ];
+
+    let dicaIndex = 0;
+    function trocarDica() {
+      const dicaDiv = document.getElementById("dica-rodape");
+      if (dicas.length > 0 && dicaDiv) {
+        dicaDiv.textContent = dicas[dicaIndex];
+        dicaIndex = (dicaIndex + 1) % dicas.length;
+      }
+    }
+    window.onload = () => {
+      trocarDica();
+      setInterval(trocarDica, 10000);
+    };
+
     function buscar() {
       const duvida = document.getElementById("duvida").value.trim();
       const especie = document.getElementById("especie").value.trim();
@@ -161,7 +183,7 @@
         <div class="result"><strong>🏛️ Repositório UNESP:</strong><br><a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a></div>
         <div class="result"><strong>📘 EMBRAPA (via Google):</strong><br><a href="https://www.google.com/search?q=site:embrapa.br+${termoBusca}" target="_blank">Buscar boletins e PDFs</a></div>
         <div class="result"><strong>🌍 FAO (via Google):</strong><br><a href="https://www.google.com/search?q=site:fao.org+${termoBusca}" target="_blank">Buscar relatórios</a></div>
-        <div class="result"><strong>🌾 AGRIS (FAO):</strong><br><a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a></div>
+        <div class="result"><strong>🌾 AGRIS (via Google):</strong><br><a href="https://www.google.com/search?q=site:agris.fao.org+${termoBusca}" target="_blank">Buscar publicações</a></div>
         <div class="result"><strong>📖 Google Livros:</strong><br><a href="https://www.google.com/search?tbm=bks&q=${termoBusca}" target="_blank">Ver livros</a></div>
         <div class="result"><strong>🗂️ CORE (Artigos livres):</strong><br><a href="https://core.ac.uk/search?q=${termoBusca}" target="_blank">Ver artigos</a></div>
         <div class="result"><strong>🌐 Redalyc (Ciência aberta):</strong><br><a href="https://www.redalyc.org/busquedaArticulo.oa?q=${termoBusca}" target="_blank">Ver artigos</a></div>
