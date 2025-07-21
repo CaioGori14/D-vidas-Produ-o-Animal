@@ -1,71 +1,268 @@
-<script>
-  const SUPABASE_URL = 'https://tjxommslunnfzaqpgvwp.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqeG9tbXNsdW5uZnphcXBndndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxMDc4MTEsImV4cCI6MjA2ODY4MzgxMX0.NLn-jiQfyOK3vJvBfdV611HKUzrBeDj-QsoWgQ9BMCM';
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  async function registrar() {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const { error } = await supabase.auth.signUp({ email, password: senha });
-    if (error) alert("Erro ao cadastrar: " + error.message);
-    else alert("Cadastro realizado! Confirme seu e-mail.");
-  }
-
-  async function logar() {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
-    if (error) alert("Erro ao entrar: " + error.message);
-    else location.reload();
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    location.reload();
-  }
-
-  async function checkLogin() {
-    const { data: { session } } = await supabase.auth.getSession();
-    const area = document.getElementById("area-restrita");
-    const loginForm = document.getElementById("form-login");
-    const loginArea = document.getElementById("login-area");
-    if (session) {
-      area.style.display = "block";
-      loginForm.style.display = "none";
-      loginArea.innerHTML = '<a href="#" onclick="logout()">Sair</a>';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZooTec Play - Conectando você à Ciência Animal!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
+      position: relative;
+      min-height: 100vh;
     }
-  }
+    header {
+      background-color: rgba(1, 87, 155, 0.9);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .nav-login {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+    .nav-login a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      background-color: #0288d1;
+      border-radius: 8px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 2rem auto;
+      background-color: rgba(255,255,255,0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.9rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #0288d1;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      border: none;
+    }
+    button:hover {
+      background-color: #0277bd;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background: #f1f8e9;
+      padding: 1rem;
+      border-left: 4px solid #8bc34a;
+      border-radius: 6px;
+    }
+    a {
+      color: #01579b;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    #dica-rodape {
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #0288d1;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      display: inline-block;
+      max-width: 90%;
+      animation: fadeIn 1s ease-in-out;
+      transition: all 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .autocomplete-suggestions {
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 1000;
+      width: 100%;
+    }
+    .autocomplete-suggestions div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestions div:hover {
+      background: #f1f1f1;
+    }
+    .area-restrita {
+      display: none;
+      background: #e8f5e9;
+      padding: 1rem;
+      border-left: 5px solid #43a047;
+      margin-top: 2rem;
+    }
+    .form-login {
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-login" id="login-area"></div>
+    <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
+    <h1>ZooTec Play - Conectando você à Ciência Animal!</h1>
+  </header>
 
-  checkLogin();
+  <div class="container">
+    <div class="form-login" id="form-login">
+      <h3>Área de Cadastro / Login</h3>
+      <input type="email" id="email" placeholder="Seu e-mail">
+      <input type="password" id="senha" placeholder="Sua senha">
+      <button onclick="registrar()">Cadastrar</button>
+      <button onclick="logar()">Entrar</button>
+    </div>
 
-  // DICAS
-  const dicas = [
-    "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
-    "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
-    "📘 O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
-    "🌍 A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
-    "🔍 O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
-    "📚 A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente."
-  ];
+    <div id="area-restrita" class="area-restrita">
+      <p>🔐 Você está logado. Aproveite os conteúdos exclusivos!</p>
+    </div>
 
-  let dicaIndex = 0;
-  function trocarDica() {
-    const dicaEl = document.getElementById("dica-rodape");
-    if (dicaEl) {
-      dicaEl.textContent = dicas[dicaIndex];
+    <div style="position: relative;">
+      <input type="text" id="duvida" placeholder="Digite sua dúvida...">
+      <div id="sugestoes" class="autocomplete-suggestions"></div>
+    </div>
+    <select id="especie">
+      <option value="">Todas as espécies</option>
+      <option value="bovinos">Bovinos</option>
+      <option value="suínos">Suínos</option>
+      <option value="aves">Aves</option>
+      <option value="ovinos">Ovinos</option>
+      <option value="peixes">Peixes</option>
+      <option value="abelhas">Abelhas</option>
+      <option value="búfalos">Búfalos</option>
+      <option value="rãs">Rãs</option>
+      <option value="equinos">Equinos</option>
+      <option value="coelhos">Coelhos</option>
+      <option value="cães">Cães</option>
+      <option value="gatos">Gatos</option>
+    </select>
+    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
+    <button onclick="buscar()">Buscar Artigos</button>
+    <div id="resultados"></div>
+  </div>
+
+  <footer>
+    <div id="dica-rodape">Dica carregando...</div>
+    <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://tjxommslunnfzaqpgvwp.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqeG9tbXNsdW5uZnphcXBndndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxMDc4MTEsImV4cCI6MjA2ODY4MzgxMX0.NLn-jiQfyOK3vJvBfdV611HKUzrBeDj-QsoWgQ9BMCM';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function registrar() {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const { error } = await supabase.auth.signUp({ email, password: senha });
+      if (error) alert("Erro ao cadastrar: " + error.message);
+      else alert("Cadastro realizado! Confirme seu e-mail.");
+    }
+
+    async function logar() {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+      if (error) alert("Erro ao entrar: " + error.message);
+      else location.reload();
+    }
+
+    async function logout() {
+      await supabase.auth.signOut();
+      location.reload();
+    }
+
+    async function checkLogin() {
+      const { data: { session } } = await supabase.auth.getSession();
+      const area = document.getElementById("area-restrita");
+      const loginForm = document.getElementById("form-login");
+      const loginArea = document.getElementById("login-area");
+      if (session) {
+        area.style.display = "block";
+        loginForm.style.display = "none";
+        loginArea.innerHTML = '<a href="#" onclick="logout()">Sair</a>';
+      }
+    }
+
+    checkLogin();
+
+    const dicas = [
+      "🐄 A Embrapa atua desde 1973 com foco em inovação agropecuária para o Brasil.",
+      "🌱 A FAO disponibiliza relatórios globais sobre sustentabilidade na pecuária.",
+      "📘 O Repositório da UNESP contém mais de 30 mil trabalhos acadêmicos abertos.",
+      "🌍 A base AGRIS reúne mais de 12 milhões de registros em agricultura e pecuária.",
+      "🔍 O Google Scholar é uma ferramenta essencial para encontrar artigos científicos.",
+      "📚 A SciELO hospeda revistas brasileiras avaliadas e indexadas internacionalmente."
+    ];
+    let dicaIndex = 0;
+    function trocarDica() {
+      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
       dicaIndex = (dicaIndex + 1) % dicas.length;
     }
-  }
+    setInterval(trocarDica, 10000);
+    window.onload = trocarDica;
 
-  // IMAGENS DE FUNDO
-  const imagensFundo = [
-    'https://images.pexels.com/photos/4911676/pexels-photo-4911676.jpeg',
-    'https://images.pexels.com/photos/5088028/pexels-photo-5088028.jpeg',
-    'https://images.pexels.com/photos/18794641/pexels-photo-18794641/free-photo-of-porcos-selvagens-na-grama.jpeg',
-    'https://images.pexels.com/photos/5944199/pexels-photo-5944199.jpeg',
-    'https://images.pexels.com/photos/4911681/pexels-photo-4911681.jpeg',
-    'https://images.pexels.com/photos/4911664/pexels-photo-4911664.jpeg'
-  ];
+    const imagensFundo = [
+      'https://images.unsplash.com/photo-1604335399103-4d2c1c03115f',
+      'https://images.unsplash.com/photo-1578985545062-69928b1d9587',
+      'https://images.unsplash.com/photo-1551504734-5ba7bbb1ea7e',
+      'https://images.unsplash.com/photo-1584306677420-4cae0d76f38c',
+      'https://images.unsplash.com/photo-1613321551034-bd0510e743d1',
+      'https://images.unsplash.com/photo-1598137265809-b37d0e5f1db3',
+      'https://images.unsplash.com/photo-1613109041654-893f0e5f4c5e'
+    ];
+    let imagemIndex = 0;
+    function trocarImagemFundo() {
+      document.body.style.backgroundImage = `url(${imagensFundo[imagemIndex]})`;
+      imagemIndex = (imagemIndex + 1) % imagensFundo.length;
+    }
+    setInterval(trocarImagemFundo, 15000);
+    window.onload = () => {
+      trocarImagemFundo();
+      trocarDica();
+    }
+  </script>
+</body>
+</html>
+ ];
   let imagemIndex = 0;
   function trocarImagemFundo() {
     document.body.style.backgroundImage = `url(${imagensFundo[imagemIndex]})`;
