@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - ZooTec Play</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f0f4f8;
+      padding: 2rem;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #01579b;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #0288d1;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0277bd;
+    }
+    #mensagem {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Entrar no ZooTec Play</h2>
+  <input type="email" id="email" placeholder="Seu e-mail" required>
+  <input type="password" id="senha" placeholder="Sua senha" required>
+  <button onclick="login()">Entrar</button>
+  <button onclick="cadastro()">Cadastrar</button>
+  <div id="mensagem"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://tjxommslunnfzaqpgvwp.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqeG9tbXNsdW5uZnphcXBndndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxMDc4MTEsImV4cCI6MjA2ODY4MzgxMX0.NLn-jiQfyOK3vJvBfdV611HKUzrBeDj-QsoWgQ9BMCM';
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password: senha
+      });
+
+      const mensagem = document.getElementById('mensagem');
+      mensagem.style.color = error ? 'red' : 'green';
+      mensagem.textContent = error ? 'Erro: ' + error.message : 'Login feito com sucesso!';
+    }
+
+    async function cadastro() {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password: senha
+      });
+
+      const mensagem = document.getElementById('mensagem');
+      mensagem.style.color = error ? 'red' : 'green';
+      mensagem.textContent = error ? 'Erro: ' + error.message : 'Cadastro realizado. Verifique seu e-mail.';
+    }
+  </script>
+</body>
+</html>
