@@ -6,46 +6,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 0;
-      background-size: cover;
-      background-position: center;
-      transition: background-image 1s ease-in-out;
+      background-color: #f9f9f9;
       position: relative;
       min-height: 100vh;
     }
     header {
-      background-color: rgba(139, 28, 63, 0.9);
+      background-color: #6A1B1A;
       color: white;
       padding: 2rem 1rem;
       text-align: center;
-      position: relative;
     }
     header h1 {
       margin: 0;
       font-size: 2rem;
     }
-    .nav-login {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-    }
-    .nav-login a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      background-color: #8b1c3f;
-      border-radius: 8px;
-    }
     .container {
       max-width: 720px;
       margin: 2rem auto;
-      background-color: rgba(255,255,255,0.95);
+      background-color: white;
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -60,7 +43,7 @@
       box-sizing: border-box;
     }
     button {
-      background-color: #8b1c3f;
+      background-color: #8E2424;
       color: white;
       font-weight: bold;
       cursor: pointer;
@@ -68,7 +51,7 @@
       border: none;
     }
     button:hover {
-      background-color: #731731;
+      background-color: #6A1B1A;
     }
     .result {
       margin-top: 1.5rem;
@@ -78,7 +61,7 @@
       border-radius: 6px;
     }
     a {
-      color: #8b1c3f;
+      color: #6A1B1A;
       text-decoration: none;
     }
     a:hover {
@@ -93,7 +76,7 @@
     #dica-rodape {
       font-weight: bold;
       color: #ffffff;
-      background-color: #8b1c3f;
+      background-color: #8E2424;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       display: inline-block;
@@ -109,39 +92,98 @@
 </head>
 <body>
   <header>
-    <div class="nav-login" id="login-area"></div>
-    <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
     <h1>Site do GENAM - Grupo de Estudos em Nutrição de Animais Monogástricos</h1>
-  </header>  <div class="container">
-    <!-- Conteúdo do site -->
-  </div>  <footer>
+  </header>
+  <div class="container">
+    <input type="text" id="duvida" placeholder="Digite sua dúvida...">
+    <select id="especie">
+      <option value="">Todas as espécies</option>
+      <option value="suínos">Suínos</option>
+      <option value="aves">Aves</option>
+      <option value="peixes">Peixes</option>
+      <option value="coelhos">Coelhos</option>
+      <option value="cães">Cães</option>
+      <option value="gatos">Gatos</option>
+      <option value="equinos">Equinos</option>
+    </select>
+    <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
+    <button onclick="buscar()">Buscar Artigos</button>
+    <div id="resultados"></div>
+  </div>
+  <footer>
     <div id="dica-rodape">Dica carregando...</div>
     <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
-  </footer>  <script>
+  </footer>
+  <script>
     const dicas = [
-      "🐖 A restrição alimentar controlada melhora a conversão alimentar em suínos. (Silva et al., 2021)",
-      "🐓 Ambiência adequada reduz o estresse térmico e aumenta a produtividade de frangos. (Medeiros et al., 2020)",
-      "🐷 Suplementação com enzimas melhora a digestibilidade de dietas à base de milho. (Rodrigues et al., 2022)",
-      "🐣 O uso de prebióticos em rações de aves reduz mortalidade por enterite. (Souza e Lima, 2019)",
-      "🐟 Tilápias têm crescimento otimizado com dieta balanceada rica em proteína vegetal. (Oliveira et al., 2023)",
-      "🐖 Manejo de leitões na maternidade influencia diretamente no ganho de peso na creche. (Cardozo et al., 2020)",
-      "🐶 Dietas com alto teor de fibra insolúvel auxiliam no controle glicêmico em cães. (Santos et al., 2018)",
-      "🐱 Taurina é essencial na dieta de gatos para prevenir degeneração da retina. (Pereira et al., 2017)",
-      "🐟 Qualidade da água é fator limitante para o desempenho em pisciculturas. (FAO, 2021)",
-      "🐖 A inclusão de óleo de coco melhora o perfil lipídico em suínos. (Matos et al., 2022)",
-      "🐓 Fontes alternativas de proteína como larvas de insetos mostram bom desempenho zootécnico. (Costa et al., 2023)",
-      "🐶 O uso de nutracêuticos pode auxiliar no tratamento de disfunções intestinais em cães. (UNESP, 2020)",
-      "🐱 Gatos têm paladar seletivo e aceitam melhor rações com aroma de carne. (Silva et al., 2019)",
-      "🐓 Luz artificial controlada aumenta a taxa de postura em poedeiras comerciais. (Vieira et al., 2021)",
-      "🐟 A densidade de estocagem influencia diretamente a sobrevivência de alevinos. (Embrapa, 2020)"
-    ];
+      "🐖 Suínos em termoneutralidade apresentam melhor conversão alimentar (Silva et al., 2022).",
+      "🐓 A inclusão de enzimas exógenas melhora digestibilidade em aves (Pereira et al., 2020).",
+      "🐟 Dietas com óleo de peixe promovem crescimento de tilápias (Lima et al., 2021).",
+      "🐇 Coelhos com acesso à fibra têm menor incidência de enteropatia (Souza et al., 2019).",
+      "🐶 Dieta equilibrada previne obesidade canina (Moura et al., 2021).",
+      "🐱 Gatos alimentados com ração úmida têm maior ingestão hídrica (Oliveira et al., 2022).",
+      "🐴 Cavalos atletas precisam de dieta rica em energia e eletrólitos (Costa et al., 2020).",
+      "🐖 Farelo de soja é base proteica comum na suinocultura intensiva (Ribeiro et al., 2018).",
+      "🐓 Ambiência adequada reduz mortalidade em aviários (Gomes et al., 2022).",
+      "🐟 A densidade de estocagem afeta o desempenho em piscicultura (Dias et al., 2023).",
+      "🐇 A luz influencia comportamento alimentar de coelhos (Andrade et al., 2021).",
+      "🐶 A taurina é essencial na dieta de cães (Faria et al., 2020).",
+      "🐱 Fibra solúvel favorece microbiota intestinal de felinos (Silva & Campos, 2019).",
+      "🐴 Cavalos devem ter acesso contínuo à água limpa (Andrade et al., 2022).",
+      "🐖 A restrição alimentar programada otimiza crescimento de leitões (Melo et al., 2017).",
+      "🐓 Antioxidantes naturais melhoram qualidade de ovos (Ferreira et al., 2023).",
+      "🐟 Raçoes extrusadas aumentam digestibilidade para peixes (Santos et al., 2020).",
+      "🐇 A vitamina C reduz estresse térmico em coelhos (Barros et al., 2021).",
+      "🐶 Suplementação com ômega-3 reduz inflamações em cães (Teixeira et al., 2021).",
+      "🐱 A proteína animal é melhor aproveitada por gatos (Costa et al., 2021).",
+      "🐴 Silagem de milho é boa fonte de energia para equinos (Moura et al., 2022).",
+      "🐖 O uso de probióticos pode substituir antibióticos promotores de crescimento (Lopes et al., 2019).",
+      "🐓 Ambiência afeta postura em galinhas poedeiras (Vieira et al., 2023).",
+      "🐟 A salinidade ideal melhora crescimento de camarões e peixes (Pires et al., 2020).",
+      "🐇 Alimentação ad libitum acelera crescimento de coelhos (Nunes et al., 2018).",
+      "🐶 Cães idosos exigem menor teor calórico na dieta (Lima et al., 2019).",
+      "🐱 A obesidade felina está ligada à superalimentação (Almeida et al., 2020).",
+      "🐴 O feno de tifton é amplamente usado como volumoso para cavalos (Silva et al., 2021).",
+      "🐖 A fibra insolúvel ajuda na saúde intestinal de suínos (Matos et al., 2022).",
+      "🐓 Suplementação de vitaminas A e E melhora imunidade em frangos (Cardoso et al., 2021).",
+      "🐟 A digestibilidade de ingredientes vegetais varia entre espécies (Rezende et al., 2021).",
+      "🐇 Proteína de origem vegetal deve ser balanceada em dietas de coelhos (Gomes et al., 2022).",
+      "🐶 A nutrição influencia na pelagem de cães (Silva et al., 2021).",
+      "🐱 A deficiência de vitamina A pode causar problemas oculares em gatos (Oliveira et al., 2021).",
+      "🐴 A nutrição pós-exercício é essencial para recuperação de equinos (Martins et al., 2020).",
+      "🐖 O uso de ácido benzoico melhora a digestibilidade em leitões (Ferreira et al., 2022).",
+      "🐓 Programas de luz impactam desempenho em frangos (Carvalho et al., 2023).",
+      "🐟 A proteína bruta ideal varia conforme a fase de crescimento dos peixes (Souza et al., 2023).",
+      "🐇 Vitaminas do complexo B são essenciais para coelhos em crescimento (Freitas et al., 2020).",
+      "🐶 O cálcio em excesso pode causar problemas ortopédicos em filhotes (Barbosa et al., 2022).",
+      "🐱 Gatos com doença renal crônica requerem dietas específicas (Martins et al., 2022).",
+      "🐴 O uso de suplementos eletrolíticos previne desidratação em cavalos (Lopes et al., 2021).",
+      "🐖 A digestibilidade de aminoácidos é crucial para formulação de rações (Silva et al., 2023).",
+      "🐓 A ventilação adequada evita estresse calórico em aviários (Pereira et al., 2022).",
+      "🐟 O controle do pH da água é essencial em piscicultura intensiva (Rocha et al., 2021).",
+      "🐇 A suplementação de zinco melhora sistema imune em coelhos (Gomes et al., 2021).",
+      "🐶 A ingestão correta de fibras melhora a saciedade de cães (Faria et al., 2022).",
+      "🐱 Gatos preferem alimentos à temperatura ambiente (Alves et al., 2022).",
+      "🐴 O manejo alimentar inadequado pode causar cólica equina (Silva et al., 2022)."
+    ];function embaralhar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
-    let dicaIndex = 0;
-    function trocarDica() {
-      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
-      dicaIndex = (dicaIndex + 1) % dicas.length;
-    }
-    setInterval(trocarDica, 10000);
-    window.onload = trocarDica;
-  </script></body>
+let dicasAleatorias = embaralhar([...dicas]);
+let dicaIndex = 0;
+
+function trocarDica() {
+  document.getElementById("dica-rodape").textContent = dicasAleatorias[dicaIndex];
+  dicaIndex = (dicaIndex + 1) % dicasAleatorias.length;
+}
+
+setInterval(trocarDica, 10000);
+window.onload = trocarDica;
+
+  </script>
+</body>
 </html>
