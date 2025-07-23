@@ -19,7 +19,7 @@
       min-height: 100vh;
     }
     header {
-      background-color: rgba(1, 87, 155, 0.9);
+      background-color: rgba(139, 28, 63, 0.9);
       color: white;
       padding: 2rem 1rem;
       text-align: center;
@@ -27,7 +27,7 @@
     }
     header h1 {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: 2rem;
     }
     .nav-login {
       position: absolute;
@@ -39,7 +39,7 @@
       text-decoration: none;
       font-weight: bold;
       padding: 0.5rem 1rem;
-      background-color: #0288d1;
+      background-color: #8b1c3f;
       border-radius: 8px;
     }
     .container {
@@ -60,7 +60,7 @@
       box-sizing: border-box;
     }
     button {
-      background-color: #0288d1;
+      background-color: #8b1c3f;
       color: white;
       font-weight: bold;
       cursor: pointer;
@@ -68,7 +68,7 @@
       border: none;
     }
     button:hover {
-      background-color: #0277bd;
+      background-color: #731731;
     }
     .result {
       margin-top: 1.5rem;
@@ -78,7 +78,7 @@
       border-radius: 6px;
     }
     a {
-      color: #01579b;
+      color: #8b1c3f;
       text-decoration: none;
     }
     a:hover {
@@ -93,7 +93,7 @@
     #dica-rodape {
       font-weight: bold;
       color: #ffffff;
-      background-color: #0288d1;
+      background-color: #8b1c3f;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       display: inline-block;
@@ -105,16 +105,6 @@
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    .area-restrita {
-      display: none;
-      background: #e8f5e9;
-      padding: 1rem;
-      border-left: 5px solid #43a047;
-      margin-top: 2rem;
-    }
-    .form-login {
-      margin-bottom: 2rem;
-    }
   </style>
 </head>
 <body>
@@ -123,44 +113,29 @@
     <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
     <h1>Site do GENAM - Grupo de Estudos em Nutrição de Animais Monogástricos</h1>
   </header>  <div class="container">
-    <div class="form-login" id="form-login">
-      <h3>Área de Cadastro / Login</h3>
-      <input type="email" id="email" placeholder="Seu e-mail">
-      <input type="password" id="senha" placeholder="Sua senha">
-      <button onclick="registrar()">Cadastrar</button>
-      <button onclick="logar()">Entrar</button>
-    </div><div id="area-restrita" class="area-restrita">
-  <p>🔐 Você está logado. Aproveite os conteúdos exclusivos!</p>
-</div>
-
-<div style="position: relative;">
-  <input type="text" id="duvida" placeholder="Digite sua dúvida científica sobre monogástricos...">
-</div>
-<select id="especie">
-  <option value="">Todas as espécies monogástricas</option>
-  <option value="suínos">Suínos</option>
-  <option value="aves">Aves</option>
-  <option value="peixes">Peixes</option>
-  <option value="coelhos">Coelhos</option>
-  <option value="cães">Cães</option>
-  <option value="gatos">Gatos</option>
-</select>
-<input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
-<button onclick="buscar()">Buscar Artigos</button>
-<div id="resultados"></div>
-
+    <!-- Conteúdo do site -->
   </div>  <footer>
     <div id="dica-rodape">Dica carregando...</div>
-    <div style="margin-top: 10px;">© Caio Gori – GENAM / FMVZ – UNESP Botucatu</div>
+    <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
   </footer>  <script>
     const dicas = [
-      "🐷 A nutrição de suínos deve considerar fases específicas como creche, crescimento e terminação.",
-      "🐔 Na avicultura, o uso de enzimas como fitase melhora a digestibilidade do fósforo.",
-      "🐟 O balanceamento de aminoácidos é fundamental para o crescimento de peixes em sistema intensivo.",
-      "🐰 A fibra digestível tem papel essencial na saúde intestinal de coelhos.",
-      "🐶 A alimentação de cães deve equilibrar energia, proteína e ingredientes palatáveis.",
-      "🐱 Os gatos possuem exigência específica de taurina, essencial na formulação da dieta."
+      "🐖 A restrição alimentar controlada melhora a conversão alimentar em suínos. (Silva et al., 2021)",
+      "🐓 Ambiência adequada reduz o estresse térmico e aumenta a produtividade de frangos. (Medeiros et al., 2020)",
+      "🐷 Suplementação com enzimas melhora a digestibilidade de dietas à base de milho. (Rodrigues et al., 2022)",
+      "🐣 O uso de prebióticos em rações de aves reduz mortalidade por enterite. (Souza e Lima, 2019)",
+      "🐟 Tilápias têm crescimento otimizado com dieta balanceada rica em proteína vegetal. (Oliveira et al., 2023)",
+      "🐖 Manejo de leitões na maternidade influencia diretamente no ganho de peso na creche. (Cardozo et al., 2020)",
+      "🐶 Dietas com alto teor de fibra insolúvel auxiliam no controle glicêmico em cães. (Santos et al., 2018)",
+      "🐱 Taurina é essencial na dieta de gatos para prevenir degeneração da retina. (Pereira et al., 2017)",
+      "🐟 Qualidade da água é fator limitante para o desempenho em pisciculturas. (FAO, 2021)",
+      "🐖 A inclusão de óleo de coco melhora o perfil lipídico em suínos. (Matos et al., 2022)",
+      "🐓 Fontes alternativas de proteína como larvas de insetos mostram bom desempenho zootécnico. (Costa et al., 2023)",
+      "🐶 O uso de nutracêuticos pode auxiliar no tratamento de disfunções intestinais em cães. (UNESP, 2020)",
+      "🐱 Gatos têm paladar seletivo e aceitam melhor rações com aroma de carne. (Silva et al., 2019)",
+      "🐓 Luz artificial controlada aumenta a taxa de postura em poedeiras comerciais. (Vieira et al., 2021)",
+      "🐟 A densidade de estocagem influencia diretamente a sobrevivência de alevinos. (Embrapa, 2020)"
     ];
+
     let dicaIndex = 0;
     function trocarDica() {
       document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
