@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZooTec Play - Conectando você à Ciência Animal!</title>
+  <title>Site do GENAM - Grupo de Estudos em Nutrição de Animais Monogástricos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
     }
     header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
     .nav-login {
       position: absolute;
@@ -105,23 +105,6 @@
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    .autocomplete-suggestions {
-      background: white;
-      border: 1px solid #ccc;
-      max-height: 150px;
-      overflow-y: auto;
-      border-radius: 5px;
-      position: absolute;
-      z-index: 1000;
-      width: 100%;
-    }
-    .autocomplete-suggestions div {
-      padding: 8px;
-      cursor: pointer;
-    }
-    .autocomplete-suggestions div:hover {
-      background: #f1f1f1;
-    }
     .area-restrita {
       display: none;
       background: #e8f5e9;
@@ -138,7 +121,7 @@
   <header>
     <div class="nav-login" id="login-area"></div>
     <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
-    <h1>ZooTec Play - Conectando você à Ciência Animal!</h1>
+    <h1>Site do GENAM - Grupo de Estudos em Nutrição de Animais Monogástricos</h1>
   </header>  <div class="container">
     <div class="form-login" id="form-login">
       <h3>Área de Cadastro / Login</h3>
@@ -151,20 +134,13 @@
 </div>
 
 <div style="position: relative;">
-  <input type="text" id="duvida" placeholder="Digite sua dúvida...">
-  <div id="sugestoes" class="autocomplete-suggestions"></div>
+  <input type="text" id="duvida" placeholder="Digite sua dúvida científica sobre monogástricos...">
 </div>
 <select id="especie">
-  <option value="">Todas as espécies</option>
-  <option value="bovinos">Bovinos</option>
+  <option value="">Todas as espécies monogástricas</option>
   <option value="suínos">Suínos</option>
   <option value="aves">Aves</option>
-  <option value="ovinos">Ovinos</option>
   <option value="peixes">Peixes</option>
-  <option value="abelhas">Abelhas</option>
-  <option value="búfalos">Búfalos</option>
-  <option value="rãs">Rãs</option>
-  <option value="equinos">Equinos</option>
   <option value="coelhos">Coelhos</option>
   <option value="cães">Cães</option>
   <option value="gatos">Gatos</option>
@@ -175,39 +151,22 @@
 
   </div>  <footer>
     <div id="dica-rodape">Dica carregando...</div>
-    <div style="margin-top: 10px;">© Caio Gori – Produção Animal Inteligente</div>
+    <div style="margin-top: 10px;">© Caio Gori – GENAM / FMVZ – UNESP Botucatu</div>
   </footer>  <script>
-    const SUPABASE_URL = 'https://tjxommslunnfzaqpgvwp.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqeG9tbXNsdW5uZnphcXBndndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxMDc4MTEsImV4cCI6MjA2ODY4MzgxMX0.NLn-jiQfyOK3vJvBfdV611HKUzrBeDj-QsoWgQ9BMCM';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    async function registrar() {
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      const { error } = await supabase.auth.signUp({ email, password: senha });
-      if (error) alert("Erro ao cadastrar: " + error.message);
-      else alert("Cadastro realizado! Confirme seu e-mail.");
+    const dicas = [
+      "🐷 A nutrição de suínos deve considerar fases específicas como creche, crescimento e terminação.",
+      "🐔 Na avicultura, o uso de enzimas como fitase melhora a digestibilidade do fósforo.",
+      "🐟 O balanceamento de aminoácidos é fundamental para o crescimento de peixes em sistema intensivo.",
+      "🐰 A fibra digestível tem papel essencial na saúde intestinal de coelhos.",
+      "🐶 A alimentação de cães deve equilibrar energia, proteína e ingredientes palatáveis.",
+      "🐱 Os gatos possuem exigência específica de taurina, essencial na formulação da dieta."
+    ];
+    let dicaIndex = 0;
+    function trocarDica() {
+      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
+      dicaIndex = (dicaIndex + 1) % dicas.length;
     }
-
-    async function logar() {
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
-      if (error) alert("Erro ao entrar: " + error.message);
-      else location.reload();
-    }
-
-    async function logout() {
-      await supabase.auth.signOut();
-      location.reload();
-    }
-
-    async function checkLogin() {
-      const { data: { session } } = await supabase.auth.getSession();
-      const area = document.getElementById("area-restrita");
-      const loginForm = document.getElementById("form-login");
-      const loginArea = document.getElementById("login-area");
-      if (session) {
-        area.style.display = "block";
-        loginForm.style.display = "none";
-        loginArea.inner
+    setInterval(trocarDica, 10000);
+    window.onload = trocarDica;
+  </script></body>
+</html>
