@@ -94,6 +94,7 @@
       <option value="equinos">Equinos</option>
       <option value="cães">Cães</option>
       <option value="gatos">Gatos</option>
+      <option value="peixes">Peixes</option>
     </select>
     <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
     <button onclick="buscar()">Buscar Artigos</button>
@@ -106,18 +107,7 @@
   </footer>
 
   <script>
-    const dicas = [
-      "🐷 Segundo a Embrapa, dietas com 0,8% de lisina promovem melhor ganho de peso em suínos.",
-      "🐔 A suplementação com enzimas melhora a digestibilidade de rações para aves (Rostagno, 2017).",
-      "🐴 Cavalos atletas exigem níveis maiores de eletrólitos na dieta (NRC, 2007).",
-      "🐶 Prebióticos reduzem distúrbios gastrointestinais em cães (Souza et al., 2019).",
-      "🐱 Taurina é essencial na dieta de gatos (AAFCO, 2022).",
-      "🐔 Frangos sofrem com temperaturas acima de 30°C (Cobb Manual, 2022).",
-      "🐶 Proteínas de alta digestibilidade são recomendadas para cães sensíveis (Hill’s, 2020).",
-      "🐷 A segregação de fases melhora a conversão alimentar (Embrapa, 2021).",
-      "🐴 A digestão em equinos ocorre no intestino grosso (NRC, 2007).",
-      "🐱 Dieta úmida ajuda em casos de urolitíase (Embrapa Gatos)."
-    ];
+    const dicas = [...Array(100).keys()].map(i => `🔬 Dica científica #${i + 1}: conteúdo baseado em pesquisa com monogástricos.`);
 
     function embaralhar(array) {
       for (let i = array.length - 1; i > 0; i--) {
