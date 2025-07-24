@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +19,7 @@
       min-height: 100vh;
     }
     header {
-      background-color: #7b1f35;
+      background-color: #6a1b1a;
       color: white;
       padding: 2rem 1rem;
       text-align: center;
@@ -45,7 +46,7 @@
       box-sizing: border-box;
     }
     button {
-      background-color: #b71c1c;
+      background-color: #8e2424;
       color: white;
       font-weight: bold;
       cursor: pointer;
@@ -53,21 +54,7 @@
       border: none;
     }
     button:hover {
-      background-color: #8e0000;
-    }
-    .result {
-      margin-top: 1.5rem;
-      background: #f1f8e9;
-      padding: 1rem;
-      border-left: 4px solid #8bc34a;
-      border-radius: 6px;
-    }
-    a {
-      color: #7b1f35;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+      background-color: #6a1b1a;
     }
     footer {
       text-align: center;
@@ -78,7 +65,7 @@
     #dica-rodape {
       font-weight: bold;
       color: #ffffff;
-      background-color: #7b1f35;
+      background-color: #8e2424;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       display: inline-block;
@@ -90,161 +77,65 @@
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    .autocomplete-suggestions {
-      background: white;
-      border: 1px solid #ccc;
-      max-height: 150px;
-      overflow-y: auto;
-      border-radius: 5px;
-      position: absolute;
-      z-index: 1000;
-      width: 100%;
-    }
-    .autocomplete-suggestions div {
-      padding: 8px;
-      cursor: pointer;
-    }
-    .autocomplete-suggestions div:hover {
-      background: #f1f1f1;
-    }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo GENAM" style="height: 80px; margin-bottom: 10px;">
+    <img src="logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
     <h1>Site do GENAM - Grupo de Estudos em Nutrição de Animais Monogástricos</h1>
-  </header>  <div class="container">
-    <div style="position: relative;">
-      <input type="text" id="duvida" placeholder="Digite sua dúvida...">
-      <div id="sugestoes" class="autocomplete-suggestions"></div>
-    </div>
+  </header>
+
+  <div class="container">
+    <input type="text" id="duvida" placeholder="Digite sua dúvida...">
     <select id="especie">
       <option value="">Todas as espécies</option>
       <option value="suínos">Suínos</option>
       <option value="aves">Aves</option>
-      <option value="peixes">Peixes</option>
+      <option value="equinos">Equinos</option>
       <option value="cães">Cães</option>
       <option value="gatos">Gatos</option>
-      <option value="equinos">Equinos</option>
     </select>
     <input type="number" id="ano" placeholder="Ano mínimo (ex: 2020)">
     <button onclick="buscar()">Buscar Artigos</button>
     <div id="resultados"></div>
-  </div>  <footer>
+  </div>
+
+  <footer>
     <div id="dica-rodape">Dica carregando...</div>
-    <div style="margin-top: 10px;">© Caio Gori – GENAM</div>
-  </footer>  <script>
+    <div style="margin-top: 10px;">© GENAM – Grupo de Estudos em Nutrição de Animais Monogástricos</div>
+  </footer>
+
+  <script>
     const dicas = [
-  "🐷 Segundo a Embrapa, dietas com 0,8% de lisina promovem melhor ganho de peso em suínos em crescimento.",
-  "🐔 A suplementação com enzimas melhora a digestibilidade de rações para aves (Fonte: Rostagno et al., 2017).",
-  "🐴 Cavalos atletas exigem níveis maiores de eletrólitos na dieta (NRC, 2007).",
-  "🐶 O uso de prebióticos reduz distúrbios gastrointestinais em cães (Souza et al., 2019).",
-  "🐱 Gatos possuem baixa sensibilidade ao sabor doce (Bradshaw et al., 2006).",
-  "🐷 Farelo de soja é a principal fonte proteica na suinocultura (Rostagno et al., 2017).",
-  "🐔 Temperatura acima de 30°C pode comprometer o desempenho de frangos de corte (Cobb Manual, 2022).",
-  "🐴 Cavalos não devem ingerir grandes volumes de concentrado por refeição (Fonte: NRC, 2007).",
-  "🐶 Proteínas de alta digestibilidade são preferidas para cães com sensibilidade alimentar (Hill's Pet Nutrition, 2020).",
-  "🐱 Taurina é essencial na dieta de gatos para evitar cardiomiopatia dilatada (AAFCO, 2022).",
-  "🐷 A segregação de fases melhora o aproveitamento nutricional em suínos (Embrapa, 2021).",
-  "🐔 A luz influencia diretamente a postura em galinhas poedeiras (Hy-Line, 2021).",
-  "🐴 A digestão em equinos ocorre principalmente no intestino grosso (Fonte: NRC, 2007).",
-  "🐶 A obesidade é a principal doença nutricional em cães urbanos (Fonte: WSAVA, 2020).",
-  "🐱 A Embrapa recomenda alimentos úmidos para gatos com histórico de urolitíase.",
-  "🐷 O uso de ácidos orgânicos pode substituir parcialmente antibióticos promotores de crescimento (Embrapa, 2022).",
-  "🐔 A densidade ideal em aviários varia de 10 a 13 aves/m² (Cobb Manual, 2022).",
-  "🐴 A forragem deve compor pelo menos 1,5% do peso vivo de um equino (Fonte: NRC, 2007).",
-  "🐶 Cães idosos necessitam de menor densidade energética e maior teor de fibras (AAFCO, 2020).",
-  "🐱 O excesso de fósforo pode agravar doenças renais crônicas em gatos (Fonte: IRIS, 2021).",
-  "🐷 A restrição alimentar controlada melhora a conversão alimentar em suínos (Fonte: Silva et al., 2018).",
-  "🐔 Ambiência controlada reduz mortalidade em frangos (Fonte: Embrapa Aves e Suínos).",
-  "🐴 A colina é importante na dieta de potros em crescimento (NRC, 2007).",
-  "🐶 Alimentos comerciais devem conter selo de adequação nutricional (Fonte: MAPA, 2020).",
-  "🐱 A alimentação ad libitum pode predispor gatos à obesidade (Fonte: AAHA, 2019).",
-  "🐷 A suplementação com zinco melhora a saúde intestinal dos leitões (Fonte: NRC, 2012).",
-  "🐔 A deficiência de cálcio afeta a formação da casca dos ovos (Hy-Line, 2021).",
-  "🐴 Cavalos podem consumir até 2,5% do PV em matéria seca por dia (Fonte: NRC, 2007).",
-  "🐶 O enriquecimento ambiental reduz estresse alimentar em cães (Fonte: CANINE SCIENCE FORUM, 2020).",
-  "🐱 Dietas ricas em proteínas auxiliam no controle de peso em felinos (Fonte: AAFCO, 2021).",
-  "🐷 A fase de creche é crítica para o desenvolvimento digestivo (Embrapa Suínos e Aves).",
-  "🐔 Frangos respondem positivamente a rações com óleo de soja como fonte de energia (Fonte: Rostagno et al., 2017).",
-  "🐴 Cavalos estabulados devem ter acesso diário a forragem fresca (Fonte: NRC, 2007).",
-  "🐶 Cães de raças grandes têm maior risco de torção gástrica, cuidado com volumes de ração (Fonte: AVMA, 2021).",
-  "🐱 A água fresca estimula a ingestão alimentar em gatos (Fonte: WSAVA, 2021).",
-  "🐷 A curva de crescimento influencia o manejo alimentar dos suínos (Fonte: Embrapa).",
-  "🐔 Ambiência térmica adequada melhora o ganho de peso em aves (Fonte: Scielo, 2020).",
-  "🐴 O uso de pastagem rotacionada favorece o consumo de equinos (Fonte: UFV, 2019).",
-  "🐶 Suplementos de glucosamina ajudam em cães com osteoartrite (Fonte: Vet Journal, 2020).",
-  "🐱 Os gatos preferem refeições pequenas e frequentes ao longo do dia (Fonte: Journal of Feline Medicine, 2021).",
-  "🐷 O uso de fitogênicos pode modular a microbiota intestinal dos suínos (Fonte: Scielo, 2021).",
-  "🐔 Programas de luz intermitente aumentam a produtividade em poedeiras (Fonte: Hy-Line, 2022).",
-  "🐴 Animais em competição devem ter dieta ajustada à carga de trabalho (Fonte: NRC, 2007).",
-  "🐶 Dietas com proteína vegetal bem balanceada são seguras para cães (Fonte: PLOS ONE, 2022).",
-  "🐱 Gatos possuem alta exigência de vitamina A preformada (Fonte: AAFCO, 2022).",
-  "🐷 A Embrapa recomenda avaliar a qualidade da água na suinocultura intensiva.",
-  "🐔 A ingestão hídrica das aves aumenta 2 a 3 vezes mais que a ingestão de ração (Fonte: Cobb Manual).",
-  "🐴 Equinos são animais sensíveis a mudanças bruscas de dieta (Fonte: UFPR, 2021).",
-  "🐶 Alimentos super premium contêm ingredientes de alta digestibilidade (Fonte: PetFood Industry, 2021).",
-  "🐱
+      "🐷 Segundo a Embrapa, dietas com 0,8% de lisina promovem melhor ganho de peso em suínos.",
+      "🐔 A suplementação com enzimas melhora a digestibilidade de rações para aves (Rostagno, 2017).",
+      "🐴 Cavalos atletas exigem níveis maiores de eletrólitos na dieta (NRC, 2007).",
+      "🐶 Prebióticos reduzem distúrbios gastrointestinais em cães (Souza et al., 2019).",
+      "🐱 Taurina é essencial na dieta de gatos (AAFCO, 2022).",
+      "🐔 Frangos sofrem com temperaturas acima de 30°C (Cobb Manual, 2022).",
+      "🐶 Proteínas de alta digestibilidade são recomendadas para cães sensíveis (Hill’s, 2020).",
+      "🐷 A segregação de fases melhora a conversão alimentar (Embrapa, 2021).",
+      "🐴 A digestão em equinos ocorre no intestino grosso (NRC, 2007).",
+      "🐱 Dieta úmida ajuda em casos de urolitíase (Embrapa Gatos)."
+      // Adicione até 100 dicas aqui no mesmo formato...
+    ];
+
     function embaralhar(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
+      return array;
     }
 
-    embaralhar(dicas);
-
+    let dicasAleatorias = embaralhar([...dicas]);
     let dicaIndex = 0;
     function trocarDica() {
-      document.getElementById("dica-rodape").textContent = dicas[dicaIndex];
-      dicaIndex = (dicaIndex + 1) % dicas.length;
+      document.getElementById("dica-rodape").textContent = dicasAleatorias[dicaIndex];
+      dicaIndex = (dicaIndex + 1) % dicasAleatorias.length;
     }
     setInterval(trocarDica, 10000);
     window.onload = trocarDica;
-
-    function buscar() {
-      const duvida = document.getElementById("duvida").value.trim();
-      const especie = document.getElementById("especie").value.trim();
-      const ano = document.getElementById("ano").value.trim();
-      const resultados = document.getElementById("resultados");
-
-      if (!duvida) {
-        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
-        return;
-      }
-
-      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
-
-      resultados.innerHTML = `
-        <div class="result">
-          <strong>🔍 Google Scholar:</strong><br>
-          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📚 Scielo:</strong><br>
-          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🏛️ Repositório UNESP:</strong><br>
-          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>📘 EMBRAPA:</strong><br>
-          <a href="https://www.embrapa.br/busca-de-publicacoes/-/publicacao/busca?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-        <div class="result">
-          <strong>🧾 BVS Agropecuária:</strong><br>
-          <a href="https://pesquisa.bvsalud.org/bvsagro/?q=${termoBusca}" target="_blank">Ver resultados</a>
-        </div>
-        <div class="result">
-          <strong>🌍 FAO:</strong><br>
-          <a href="https://www.fao.org/publications/en/?search=${termoBusca}" target="_blank">Buscar na FAO</a>
-        </div>
-        <div class="result">
-          <strong>🌾 AGRIS (FAO):</strong><br>
-          <a href="https://agris.fao.org/search/en?q=${termoBusca}" target="_blank">Ver publicações</a>
-        </div>
-      `;
-    }
-  </script></body>
+  </script>
+</body>
 </html>
