@@ -117,7 +117,6 @@
       "🐷 A segregação de fases melhora a conversão alimentar (Embrapa, 2021).",
       "🐴 A digestão em equinos ocorre no intestino grosso (NRC, 2007).",
       "🐱 Dieta úmida ajuda em casos de urolitíase (Embrapa Gatos)."
-      // Adicione até 100 dicas aqui no mesmo formato...
     ];
 
     function embaralhar(array) {
@@ -136,6 +135,47 @@
     }
     setInterval(trocarDica, 10000);
     window.onload = trocarDica;
+
+    function buscar() {
+      const duvida = document.getElementById("duvida").value.trim();
+      const especie = document.getElementById("especie").value.trim();
+      const ano = document.getElementById("ano").value.trim();
+      const resultados = document.getElementById("resultados");
+
+      if (!duvida) {
+        resultados.innerHTML = "<p style='color:red;'>Por favor, digite uma dúvida.</p>";
+        return;
+      }
+
+      let termoBusca = encodeURIComponent(`${duvida} ${especie} produção animal ${ano ? 'ano:' + ano : ''}`);
+
+      resultados.innerHTML = `
+        <div class="result">
+          <strong>🔍 Google Scholar:</strong><br>
+          <a href="https://scholar.google.com/scholar?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📚 SciELO:</strong><br>
+          <a href="https://search.scielo.org/?q=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🏛️ Repositório UNESP:</strong><br>
+          <a href="https://repositorio.unesp.br/simple-search?query=${termoBusca}" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>📘 EMBRAPA:</strong><br>
+          <a href="https://www.google.com/search?q=${termoBusca}+site%3Aembrapa.br" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🌾 AGRIS (FAO):</strong><br>
+          <a href="https://www.google.com/search?q=${termoBusca}+site%3Aagris.fao.org" target="_blank">Ver resultados</a>
+        </div>
+        <div class="result">
+          <strong>🌍 FAO:</strong><br>
+          <a href="https://www.google.com/search?q=${termoBusca}+site%3Afao.org" target="_blank">Ver resultados</a>
+        </div>
+      `;
+    }
   </script>
 </body>
 </html>
